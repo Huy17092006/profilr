@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>VŨ TRỤ DEV — Chốn nghỉ chân giữa vũ trụ ảo</title>
+<title>TẠP HÓA ONLINE — Học edit cùng mình</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800;900&family=Marcellus&family=Marcellus+SC&display=swap" rel="stylesheet">
@@ -355,17 +355,16 @@
   </div>
 
   <header>
-    <div class="logo">VŨ TRỤ DEV<small>EST. ∞</small></div>
+    <div class="logo">TẠP HÓA ONLINE<small>EST. ∞</small></div>
     <nav>
-      <a href="#explore">Khám phá</a>
-      <a href="#features">Thế giới</a>
+      <a href="#explore">Học edit</a>
     </nav>
   </header>
 
   <!-- HERO -->
   <section class="hero">
     <p class="welcome">Chào mừng đến với</p>
-    <h1 class="title">VŨ TRỤ DEV</h1>
+    <h1 class="title">TẠP HÓA ONLINE</h1>
     <p class="tagline">Chốn nghỉ chân giữa vũ trụ ảo</p>
     <div class="enter"><a href="#explore">Bước vào</a></div>
     <div class="socials" id="socials">
@@ -391,95 +390,10 @@
 
   <!-- INTRO -->
   <section class="intro" id="explore">
-    <h2 class="reveal">Mình ghét code, nhưng trót yêu cái đẹp.</h2>
-    <p class="reveal">Thú thật, mình lười kinh khủng — ngại gõ từng dòng lệnh, ngại mọi thứ rườm rà.
-       Nhưng chính vì lười mà mình mê những thứ thật gọn gàng, đẹp mắt và chạy mượt mà
-       không cần nghĩ nhiều. Thay vì vật lộn với đống code, mình tập trung làm ra những
-       trang web và chiếc CV vừa xinh vừa dễ dùng. Cứ thong thả lướt xuống xem nhé.</p>
+    <h2 class="reveal">Học edit — biến ý tưởng thành thước phim của riêng bạn.</h2>
+    <p class="reveal">Xin chào các bạn, mình là newbie mới học edit từ 4/6/2026, mình có lập 2 kênh tik tok and phở bò để chia sẻ những kiến thức bổ ích. rất mong nhận được sự ủng hộ của mọi người^.^</p>
   </section>
 
-  <!-- FEATURES -->
-  <section class="features" id="features">
-    <div class="card c-realestate left">
-      <div class="kicker">Dịch vụ 01</div>
-      <h3>Thiết Kế Web</h3>
-      <p>Biến ý tưởng của bạn thành một trang web sống động — bố cục gọn gàng, màu sắc
-         bắt mắt và hiệu ứng mượt mà. Từ landing page đến portfolio cá nhân, mình chăm
-         chút từng chi tiết để trang vừa đẹp mắt vừa dễ dùng.</p>
-      <a class="go" href="#">Xem mẫu →</a>
-    </div>
-
-    <div class="card c-arcade right">
-      <div class="kicker">Dịch vụ 02</div>
-      <h3>Thiết Kế CV</h3>
-      <p>Một chiếc CV ấn tượng sẽ mở ra nhiều cơ hội. Mình thiết kế giao diện CV hiện đại,
-         rõ ràng và chuyên nghiệp — sắp xếp thông tin hợp lý, làm nổi bật thế mạnh của bạn
-         để ghi điểm ngay từ ánh nhìn đầu tiên.</p>
-      <a class="go" id="cvBtn" href="#">Tạo CV →</a>
-    </div>
-  </section>
-
-  <!-- ===== CV BUILDER ===== -->
-  <div class="cv-modal" id="cvModal" aria-hidden="true">
-    <button class="cv-close" id="cvClose" aria-label="Đóng">×</button>
-    <div class="cv-wrap">
-      <div class="cv-form">
-        <h3>Tạo CV của bạn</h3>
-        <p class="hint">Điền thông tin bên dưới — bản xem trước cập nhật ngay tức thì.
-           Xong xuôi thì bấm “Tải / In CV” để lưu thành PDF.</p>
-
-        <label>Ảnh đại diện (tuỳ chọn)</label>
-        <input type="file" id="f_photo" accept="image/*">
-
-        <label>Họ và tên</label>
-        <input id="f_name" placeholder="Nguyễn Văn Huy">
-
-        <label>Vị trí / Chức danh</label>
-        <input id="f_title" placeholder="Nhà thiết kế web">
-
-        <div class="row2">
-          <div><label>Email</label><input id="f_email" placeholder="ban@email.com"></div>
-          <div><label>Số điện thoại</label><input id="f_phone" placeholder="0900 000 000"></div>
-        </div>
-
-        <label>Địa chỉ</label>
-        <input id="f_addr" placeholder="Hà Nội, Việt Nam">
-
-        <label>Giới thiệu bản thân</label>
-        <textarea id="f_about" placeholder="Vài dòng giới thiệu về bạn..."></textarea>
-
-        <label>Kinh nghiệm làm việc</label>
-        <div id="expList"></div>
-        <button class="addbtn" type="button" id="addExp">+ Thêm kinh nghiệm</button>
-
-        <label>Học vấn</label>
-        <div id="eduList"></div>
-        <button class="addbtn" type="button" id="addEdu">+ Thêm học vấn</button>
-
-        <label>Kỹ năng (cách nhau bởi dấu phẩy)</label>
-        <input id="f_skills" placeholder="HTML, CSS, Figma, Giao tiếp">
-
-        <button class="print-btn" type="button" id="cvPrint">⬇ Tải / In CV</button>
-      </div>
-
-      <div class="cv-preview-wrap">
-        <div id="cvPaper">
-          <div class="cv-head">
-            <img class="cv-avatar" id="p_avatar" alt="">
-            <div>
-              <div class="cv-name" id="p_name">Họ và tên của bạn</div>
-              <div class="cv-title" id="p_title">Vị trí ứng tuyển</div>
-              <div class="cv-contact" id="p_contact"></div>
-            </div>
-          </div>
-          <div id="p_aboutWrap" style="display:none"><h4>Giới thiệu</h4><p id="p_about"></p></div>
-          <div id="p_expWrap" style="display:none"><h4>Kinh nghiệm</h4><div id="p_exp"></div></div>
-          <div id="p_eduWrap" style="display:none"><h4>Học vấn</h4><div id="p_edu"></div></div>
-          <div id="p_skillsWrap" style="display:none"><h4>Kỹ năng</h4><div class="cv-skills" id="p_skills"></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class="vignette"></div>
   <div class="grain"></div>
@@ -586,110 +500,6 @@
   });
   } catch(err){ console.warn('Hiệu ứng nền gặp lỗi nhưng đã được bỏ qua:', err); }
 
-  /* ===== CV BUILDER ===== */
-  const $=id=>document.getElementById(id);
-  const esc=t=>(t||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-  const cvModal=$('cvModal');
-  function openCV(e){ if(e) e.preventDefault(); cvModal.classList.add('open'); document.body.style.overflow='hidden'; }
-  function closeCV(){ cvModal.classList.remove('open'); document.body.style.overflow=''; }
-  $('cvBtn').addEventListener('click', openCV);
-  $('cvClose').addEventListener('click', closeCV);
-  cvModal.addEventListener('click', e=>{ if(e.target===cvModal) closeCV(); });
-  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeCV(); });
-
-  /* avatar */
-  $('f_photo').addEventListener('change', e=>{
-    const file=e.target.files[0]; if(!file) return;
-    const r=new FileReader();
-    r.onload=()=>{ const img=$('p_avatar'); img.src=r.result; img.style.display='block'; };
-    r.readAsDataURL(file);
-  });
-
-  /* live text */
-  function upd(){
-    $('p_name').textContent = $('f_name').value.trim() || 'Họ và tên của bạn';
-    $('p_title').textContent = $('f_title').value.trim() || 'Vị trí ứng tuyển';
-    const parts=[$('f_email').value,$('f_phone').value,$('f_addr').value]
-      .map(v=>v.trim()).filter(Boolean).map(esc);
-    $('p_contact').innerHTML = parts.join(' &nbsp;•&nbsp; ');
-    const about=$('f_about').value.trim();
-    $('p_aboutWrap').style.display = about?'block':'none';
-    $('p_about').textContent = about;
-    const sk=$('f_skills').value.split(',').map(s=>s.trim()).filter(Boolean);
-    $('p_skillsWrap').style.display = sk.length?'block':'none';
-    $('p_skills').innerHTML = sk.map(s=>`<span>${esc(s)}</span>`).join('');
-  }
-  ['f_name','f_title','f_email','f_phone','f_addr','f_about','f_skills']
-    .forEach(id=>$(id).addEventListener('input', upd));
-
-  /* dynamic experience entries */
-  const expList=$('expList');
-  function renderExp(){
-    const items=[...expList.querySelectorAll('.entry')].map(e=>({
-      role:e.querySelector('.e-role').value.trim(),
-      org:e.querySelector('.e-org').value.trim(),
-      when:e.querySelector('.e-when').value.trim(),
-      desc:e.querySelector('.e-desc').value.trim()
-    })).filter(x=>x.role||x.org||x.desc);
-    $('p_expWrap').style.display = items.length?'block':'none';
-    $('p_exp').innerHTML = items.map(x=>`
-      <div class="cv-item">
-        <div class="it-top"><span class="it-role">${esc(x.role)}</span><span class="it-when">${esc(x.when)}</span></div>
-        ${x.org?`<div class="it-org">${esc(x.org)}</div>`:''}
-        ${x.desc?`<p>${esc(x.desc)}</p>`:''}
-      </div>`).join('');
-  }
-  function addExp(){
-    const d=document.createElement('div'); d.className='entry';
-    d.innerHTML=`
-      <button class="del" type="button">✕ Xoá</button>
-      <label>Chức danh</label><input class="e-role" placeholder="Thực tập sinh thiết kế">
-      <div class="row2">
-        <div><label>Công ty / Nơi làm</label><input class="e-org" placeholder="Công ty ABC"></div>
-        <div><label>Thời gian</label><input class="e-when" placeholder="2023 – 2024"></div>
-      </div>
-      <label>Mô tả</label><textarea class="e-desc" placeholder="Bạn đã làm những gì..."></textarea>`;
-    expList.appendChild(d);
-    d.querySelectorAll('input,textarea').forEach(i=>i.addEventListener('input', renderExp));
-    d.querySelector('.del').addEventListener('click', ()=>{ d.remove(); renderExp(); });
-  }
-
-  /* dynamic education entries */
-  const eduList=$('eduList');
-  function renderEdu(){
-    const items=[...eduList.querySelectorAll('.entry')].map(e=>({
-      role:e.querySelector('.e-role').value.trim(),
-      org:e.querySelector('.e-org').value.trim(),
-      when:e.querySelector('.e-when').value.trim()
-    })).filter(x=>x.role||x.org);
-    $('p_eduWrap').style.display = items.length?'block':'none';
-    $('p_edu').innerHTML = items.map(x=>`
-      <div class="cv-item">
-        <div class="it-top"><span class="it-role">${esc(x.role)}</span><span class="it-when">${esc(x.when)}</span></div>
-        ${x.org?`<div class="it-org">${esc(x.org)}</div>`:''}
-      </div>`).join('');
-  }
-  function addEdu(){
-    const d=document.createElement('div'); d.className='entry';
-    d.innerHTML=`
-      <button class="del" type="button">✕ Xoá</button>
-      <label>Trường / Cơ sở</label><input class="e-role" placeholder="Đại học ABC">
-      <div class="row2">
-        <div><label>Ngành / Bằng cấp</label><input class="e-org" placeholder="Công nghệ thông tin"></div>
-        <div><label>Thời gian</label><input class="e-when" placeholder="2020 – 2024"></div>
-      </div>`;
-    eduList.appendChild(d);
-    d.querySelectorAll('input').forEach(i=>i.addEventListener('input', renderEdu));
-    d.querySelector('.del').addEventListener('click', ()=>{ d.remove(); renderEdu(); });
-  }
-
-  $('addExp').addEventListener('click', addExp);
-  $('addEdu').addEventListener('click', addEdu);
-  $('cvPrint').addEventListener('click', ()=>window.print());
-
-  /* start with one empty entry each */
-  addExp(); addEdu(); upd();
 </script>
 </body>
-                </html>
+</html>
