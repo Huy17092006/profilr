@@ -352,6 +352,44 @@
     background:linear-gradient(120deg,#7cff8f,#5fe8ff); padding:15px 42px; border-radius:40px;
     font-weight:700; transition:.35s;}
   .game-btn:hover{box-shadow:0 0 32px rgba(124,255,143,.6); transform:translateY(-3px); letter-spacing:6px;}
+
+  /* ====== TEMPLATE LIBRARY (thư viện mẫu web) ====== */
+  .tplcta{position:relative; z-index:2; padding:2vh 24px 16vh; display:flex; justify-content:center;}
+  .tpl-inner{max-width:1000px; width:100%;}
+  .tpl-head{text-align:center; margin-bottom:40px;}
+  .tpl-head .kicker{font-family:'Marcellus SC'; letter-spacing:5px; font-size:11px;
+    text-transform:uppercase; color:var(--neon-cyan); opacity:.85;}
+  .tpl-head h3{font-family:'Cinzel'; font-weight:800; font-size:clamp(28px,5vw,46px);
+    color:#fff; margin:10px 0 12px; text-shadow:0 0 26px rgba(95,232,255,.4);}
+  .tpl-head p{font-size:15px; line-height:1.7; opacity:.86; max-width:580px; margin:0 auto;}
+  .tpl-grid{display:flex; gap:24px; flex-wrap:wrap; justify-content:center;}
+  .tpl-card{flex:1 1 360px; max-width:460px; text-align:center; padding:38px 32px;
+    border-radius:16px; background:rgba(22,12,38,.5); backdrop-filter:blur(8px);
+    text-decoration:none; color:var(--paper); display:block; transition:.35s;
+    border:1px solid rgba(95,232,255,.32);
+    box-shadow:0 22px 60px rgba(15,5,30,.5), 0 0 46px rgba(95,232,255,.1);}
+  .tpl-card:hover{transform:translateY(-6px);
+    box-shadow:0 30px 70px rgba(15,5,30,.55), 0 0 56px rgba(95,232,255,.22);}
+  .tpl-card.pink{border-color:rgba(255,95,168,.4);
+    box-shadow:0 22px 60px rgba(15,5,30,.5), 0 0 46px rgba(255,95,168,.12);}
+  .tpl-card.pink:hover{box-shadow:0 30px 70px rgba(15,5,30,.55), 0 0 56px rgba(255,95,168,.26);}
+  .tpl-card .ico{font-size:34px; margin-bottom:8px;}
+  .tpl-card .kicker{font-family:'Marcellus SC'; letter-spacing:5px; font-size:11px;
+    text-transform:uppercase; color:var(--neon-cyan); opacity:.85;}
+  .tpl-card.pink .kicker{color:var(--neon-pink);}
+  .tpl-card h4{font-family:'Cinzel'; font-weight:800; font-size:clamp(26px,4.5vw,38px);
+    color:#fff; margin:10px 0 14px; text-shadow:0 0 26px rgba(95,232,255,.4);}
+  .tpl-card.pink h4{text-shadow:0 0 26px rgba(255,95,168,.45);}
+  .tpl-card p{font-size:14.5px; line-height:1.7; opacity:.85; margin-bottom:22px;}
+  .tpl-chips{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:26px;}
+  .tpl-chips span{font-family:'Marcellus SC'; letter-spacing:1px; font-size:11px;
+    padding:6px 14px; border-radius:30px; background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.16); color:#fdeede;}
+  .tpl-go{display:inline-block; font-family:'Marcellus SC'; letter-spacing:4px;
+    font-size:13px; text-transform:uppercase; color:#0c1f2a; font-weight:700;
+    background:linear-gradient(120deg,#5fe8ff,#7c9bff); padding:14px 40px; border-radius:40px; transition:.35s;}
+  .tpl-card.pink .tpl-go{background:linear-gradient(120deg,#ff5fa8,#ff8a3d); color:#2a0d1c;}
+  .tpl-card:hover .tpl-go{letter-spacing:6px;}
 </style>
 </head>
 <body>
@@ -440,6 +478,36 @@
         <p>Phiên bản "Thế Chiến Ảo" khó nhằn dành cho dân lì đòn. Chậm phản xạ một nhịp
            là "toang" ngay — bạn dám thử không?</p>
         <a class="game-btn red" href="gamePLAY.html" target="_blank" rel="noopener">Vào thử →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEMPLATE LIBRARY (thư viện mẫu web) -->
+  <section class="tplcta" id="templates">
+    <div class="tpl-inner">
+      <div class="tpl-head reveal">
+        <div class="kicker">Bộ sưu tập thiết kế</div>
+        <h3>Thư viện mẫu web</h3>
+        <p>20 mẫu web mình đã dựng sẵn — từ trang thương mại lịch lãm tới phong cách neon
+           rực rỡ. Bấm vào để xem trước trực tiếp và tải riêng từng mẫu về dùng.</p>
+      </div>
+      <div class="tpl-grid">
+        <a class="tpl-card reveal" href="mau-thuong-mai.html" target="_blank" rel="noopener">
+          <div class="ico">🏙️</div>
+          <div class="kicker">10 mẫu</div>
+          <h4>Mẫu Thương Mại</h4>
+          <div class="tpl-chips"><span>SaaS</span><span>Thời trang</span><span>Nhà hàng</span><span>BĐS</span><span>Agency</span><span>+5</span></div>
+          <p>Giao diện chuyên nghiệp cho doanh nghiệp, cửa hàng và thương hiệu.</p>
+          <span class="tpl-go">Xem thư viện →</span>
+        </a>
+        <a class="tpl-card pink reveal" href="mau-neon.html" target="_blank" rel="noopener">
+          <div class="ico">🌌</div>
+          <div class="kicker">10 mẫu</div>
+          <h4>Mẫu Neon</h4>
+          <div class="tpl-chips"><span>Cyberpunk</span><span>Synthwave</span><span>Esports</span><span>Vaporwave</span><span>+6</span></div>
+          <p>Phong cách neon rực rỡ cho game, sự kiện, club và sáng tạo.</p>
+          <span class="tpl-go">Xem thư viện →</span>
+        </a>
       </div>
     </div>
   </section>
