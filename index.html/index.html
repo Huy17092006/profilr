@@ -618,5 +618,280 @@
   } catch(err){ console.warn('Hiệu ứng nền gặp lỗi nhưng đã được bỏ qua:', err); }
 
 </script>
+
+<!-- ====================== AI WIDGET (rule-based + WebLLM, không cần key) ====================== -->
+<style>
+  #aiLauncher{position:fixed; right:22px; bottom:22px; z-index:70;
+    display:flex; align-items:center; gap:10px; cursor:pointer;
+    font-family:'Marcellus SC',serif; letter-spacing:2px; font-size:12px; text-transform:uppercase;
+    color:#160d29; font-weight:700; padding:13px 20px 13px 14px; border:none; border-radius:40px;
+    background:linear-gradient(120deg,#ff5fa8,#5fe8ff); box-shadow:0 10px 30px rgba(255,95,168,.45); transition:.3s;}
+  #aiLauncher:hover{transform:translateY(-3px); box-shadow:0 14px 38px rgba(95,232,255,.55);}
+  #aiLauncher .orb{width:22px; height:22px; border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #fff, #ff5fa8 60%, transparent 78%);
+    box-shadow:0 0 14px rgba(255,255,255,.8); animation:aiPulse 2.6s ease-in-out infinite;}
+  @keyframes aiPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+  @keyframes aiBlink{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-5px);opacity:1}}
+  @keyframes aiRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  #aiPanel{position:fixed; right:22px; bottom:22px; z-index:71; width:min(380px, calc(100vw - 28px));
+    height:min(640px, calc(100vh - 44px)); display:none; flex-direction:column;
+    background:linear-gradient(180deg, rgba(40,22,66,.92), rgba(22,12,38,.96));
+    border:1px solid rgba(255,255,255,.16); border-radius:20px; overflow:hidden;
+    box-shadow:0 30px 80px rgba(8,3,20,.7); backdrop-filter:blur(14px);
+    font-family:'Marcellus',serif; color:#f5ede0;}
+  #aiPanel.open{display:flex; animation:aiRise .3s ease both;}
+  .ai-head{display:flex; align-items:center; gap:11px; padding:16px 16px 10px;}
+  .ai-head .o{width:26px; height:26px; border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #fff, var(--ai-ac,#5fe8ff) 58%, transparent 76%);
+    box-shadow:0 0 18px var(--ai-glow,rgba(95,232,255,.6)); animation:aiPulse 3s ease-in-out infinite;}
+  .ai-head .ttl{flex:1}
+  .ai-head .ttl b{font-family:'Cinzel',serif; font-size:18px; letter-spacing:1px; display:block; line-height:1;}
+  .ai-head .ttl small{font-size:11px; opacity:.7; font-family:'Marcellus SC'; letter-spacing:2px;}
+  .ai-head .x{background:none; border:1px solid rgba(255,255,255,.25); color:#f5ede0; cursor:pointer;
+    width:32px; height:32px; border-radius:50%; font-size:17px; line-height:1; transition:.25s;}
+  .ai-head .x:hover{background:rgba(255,95,168,.3); border-color:#ff5fa8;}
+  .ai-tabs{display:flex; gap:6px; padding:0 14px 8px;}
+  .ai-tabs button{flex:1; cursor:pointer; font-family:'Marcellus SC',serif; letter-spacing:1px;
+    font-size:11px; text-transform:uppercase; padding:9px 4px; border-radius:30px; color:#f5ede0;
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); transition:.25s;}
+  .ai-tabs button.on{color:#160d29; font-weight:700;}
+  .ai-smart{padding:0 14px 8px; display:flex; justify-content:center;}
+  .ai-smart button{cursor:pointer; font-family:'Marcellus SC',serif; letter-spacing:1px; font-size:11px;
+    text-transform:uppercase; padding:8px 16px; border-radius:30px; color:#cfe9ff;
+    background:rgba(95,232,255,.10); border:1px solid rgba(95,232,255,.45); transition:.25s;}
+  .ai-smart button:hover{background:rgba(95,232,255,.2);}
+  .ai-smart button.ready{color:#0c1f12; background:linear-gradient(120deg,#7cff8f,#5fe8ff); border-color:transparent;}
+  .ai-smart button.loading{opacity:.7; cursor:default;}
+  .ai-msgs{flex:1; overflow-y:auto; padding:6px 14px; display:flex; flex-direction:column; gap:10px;}
+  .ai-msgs::-webkit-scrollbar{width:7px} .ai-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:8px}
+  .ai-empty{margin:auto; text-align:center; max-width:290px; padding:10px;}
+  .ai-empty .e{font-size:40px; margin-bottom:8px;}
+  .ai-empty p{font-size:14px; line-height:1.6; opacity:.9;}
+  .ai-b{max-width:84%; padding:11px 14px; line-height:1.6; font-size:14px; white-space:pre-wrap; animation:aiRise .35s ease both;}
+  .ai-b.user{align-self:flex-end; color:#160d29; border-radius:15px 15px 4px 15px; box-shadow:0 6px 18px rgba(0,0,0,.3);}
+  .ai-b.bot{align-self:flex-start; background:rgba(22,12,38,.6); border:1px solid rgba(255,255,255,.14); border-radius:15px 15px 15px 4px;}
+  .ai-chips{display:flex; flex-wrap:wrap; gap:7px; padding:0 14px 8px; justify-content:center;}
+  .ai-chips button{cursor:pointer; font-family:'Marcellus',serif; font-size:12.5px; padding:7px 13px;
+    border-radius:30px; color:#f5ede0; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.2); transition:.2s;}
+  .ai-input{display:flex; gap:8px; align-items:flex-end; margin:6px 12px 12px; padding:7px;
+    background:rgba(22,12,38,.6); border:1px solid rgba(255,255,255,.18); border-radius:16px;}
+  .ai-input textarea{flex:1; resize:none; border:none; outline:none; background:transparent; color:#f5ede0;
+    font-family:'Marcellus',serif; font-size:14px; line-height:1.5; padding:7px 8px; max-height:96px;}
+  .ai-input button{cursor:pointer; border:none; border-radius:12px; padding:10px 15px;
+    font-family:'Marcellus SC',serif; letter-spacing:1px; font-size:13px; color:#160d29; font-weight:700; transition:.2s;}
+  .ai-input button:disabled{opacity:.4; cursor:default;}
+  .ai-typing{align-self:flex-start; display:flex; gap:5px; padding:13px 16px; border-radius:15px 15px 15px 4px;
+    background:rgba(22,12,38,.6); border:1px solid rgba(255,255,255,.14);}
+  .ai-typing i{width:7px; height:7px; border-radius:50%; display:block;}
+</style>
+
+<button id="aiLauncher" aria-label="Mở trợ lý AI"><span class="orb"></span>Hỏi AI</button>
+
+<div id="aiPanel" role="dialog" aria-label="Trợ lý AI">
+  <div class="ai-head">
+    <span class="o" id="aiOrb"></span>
+    <div class="ttl"><b>TRỢ LÝ AI</b><small id="aiTagline">Hỏi mình bất cứ điều gì</small></div>
+    <button class="x" id="aiClose">✕</button>
+  </div>
+  <div class="ai-tabs" id="aiTabs"></div>
+  <div class="ai-smart"><button id="aiSmart">🧠 Bật AI thông minh</button></div>
+  <div class="ai-msgs" id="aiMsgs"></div>
+  <div class="ai-chips" id="aiChips"></div>
+  <div class="ai-input">
+    <textarea id="aiInput" rows="1" placeholder="Nhắn cho trợ lý..."></textarea>
+    <button id="aiSend">Gửi ➤</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* ====== AI thông minh (tùy chọn): model chạy thẳng trong trình duyệt, không cần key ======
+     Mặc định Qwen2.5 1.5B (tiếng Việt khá ổn). Muốn nhẹ/nhanh hơn cho máy yếu, đổi sang:
+       "Llama-3.2-1B-Instruct-q4f16_1-MLC"  hoặc  "SmolLM2-360M-Instruct-q4f16_1-MLC" */
+  var SMART_MODEL = "Qwen2.5-1.5B-Instruct-q4f16_1-MLC";
+
+  var MODES = {
+    chat: { label:"Trò chuyện", icon:"💬", ac:"#5fe8ff", glow:"rgba(95,232,255,.6)",
+      tagline:"Hỏi mình bất cứ điều gì",
+      intro:"Chào bạn 👋 Mình là trợ lý của TẠP HÓA ONLINE. Hỏi về edit, caption, hay về kênh đều được nha! Muốn mình thông minh hơn thì bấm \"🧠 Bật AI thông minh\".",
+      system:"Bạn là trợ lý AI thân thiện của trang TẠP HÓA ONLINE (kênh chia sẻ về học edit video). Trả lời bằng tiếng Việt, gần gũi, ngắn gọn, hữu ích.",
+      chips:["Bạn là ai?","Kênh này về gì?","Cho mình một mẹo edit"] },
+    edit: { label:"Edit video", icon:"🎬", ac:"#ff5fa8", glow:"rgba(255,95,168,.6)",
+      tagline:"Mentor dựng phim của bạn",
+      intro:"Mình là mentor edit nè 🎬 Hỏi mình về cắt ghép, chỉnh màu, bắt nhịp nhạc, CapCut...",
+      system:"Bạn là mentor dạy edit video cho kênh TẠP HÓA ONLINE. Tư vấn cụ thể, dễ làm cho người mới: cắt ghép, chuyển cảnh, chỉnh màu, bắt nhịp nhạc, âm thanh, CapCut/Premiere. Trả lời tiếng Việt, đưa các bước rõ ràng.",
+      chips:["Cách bắt nhịp nhạc","Chỉnh màu cinematic","Chuyển cảnh mượt"] },
+    create: { label:"Sáng tạo", icon:"✨", ac:"#ffd36b", glow:"rgba(255,211,107,.6)",
+      tagline:"Ý tưởng · caption · hashtag",
+      intro:"Cần ý tưởng, caption hay hashtag? Nói chủ đề ra, mình gợi ý liền ✨",
+      system:"Bạn là chuyên gia sáng tạo nội dung mạng xã hội tiếng Việt (TikTok, Reels, Shorts). Tạo ý tưởng video, caption bắt trend, tiêu đề giật tít, hashtag. Gọn gàng, dễ copy. Chỉ tạo nội dung dạng chữ.",
+      chips:["Ý tưởng video edit","Caption thả thính","Hashtag triệu view","10 tiêu đề giật tít"] }
+  };
+
+  /* ====== Bộ trả lời nhanh (rule-based) — giỏi cả 3 mảng ====== */
+  var RULES = [
+    { k:["xin chao","chao ban","hello","hi ","alo","chao"], a:"Chào bạn! 👋 Mình là trợ lý của TẠP HÓA ONLINE. Bạn muốn hỏi về edit video, caption/hashtag, hay về kênh nè?" },
+    { k:["ban la ai","gioi thieu ban","ten ban","ban ten gi"], a:"Mình là trợ lý AI của TẠP HÓA ONLINE 🤖 Mình giúp bạn: mẹo edit video, gợi ý caption–hashtag–tiêu đề, và chỉ đường quanh trang web. Bấm \"🧠 Bật AI thông minh\" nếu muốn mình trả lời tự do hơn nha!" },
+    { k:["kenh nay","trang nay ve gi","tap hoa","noi dung kenh","ve gi"], a:"TẠP HÓA ONLINE là nơi mình chia sẻ về học edit video — từ cắt ghép, chỉnh màu, bắt nhịp nhạc tới các hiệu ứng nhỏ giúp video lên tay. Không cần máy khủng hay phần mềm đắt tiền, ai thích là làm được! 🎬" },
+    { k:["lien he","facebook","tiktok","zalo","github","ket noi","theo doi"], a:"Bạn kết nối với mình qua:\n• TikTok: @huy170995\n• Facebook & Zalo: có nút ở phần đầu trang\n• GitHub: Huy17092006\nKéo lên đầu trang bấm vào icon tương ứng nha!" },
+    { k:["game","tro choi","choi game"], a:"Trang có 2 game \"Thế Chiến Ảo\" 🎮: một bản dễ để giải lao, một bản siêu khó cho dân lì đòn. Kéo xuống phần Game để chơi thử nhé!" },
+    { k:["mau web","template","thu vien","mau wed","mau trang"], a:"Mình có sẵn thư viện 20 mẫu web ✨: 10 mẫu Thương Mại và 10 mẫu Neon. Kéo xuống phần \"Thư viện mẫu web\", bấm vào là xem trước và tải riêng từng mẫu được luôn!" },
+    { k:["cach dung web","huong dan","dung trang","di chuyen"], a:"Cách dùng trang rất đơn giản:\n1. Cuộn xuống để xem phần \"Học edit\".\n2. Phần Game để chơi giải trí.\n3. \"Thư viện mẫu web\" để xem/tải mẫu.\n4. Bấm \"Hỏi AI\" (góc dưới phải) bất cứ lúc nào để hỏi mình 😎" },
+
+    { k:["bat nhip","nhip nhac","beat","theo nhac","danh dau nhip"], a:"🎵 Bắt nhịp nhạc trong CapCut:\n1. Thêm nhạc → chạm vào track nhạc.\n2. Bấm \"Đánh dấu nhịp\" (Beat) để CapCut tự chấm điểm theo beat, hoặc gõ tay nút Thêm dấu.\n3. Kéo các điểm cắt cảnh trùng với dấu nhịp.\n4. Mẹo: cắt cảnh đúng ngay phách mạnh (drop) sẽ \"đã\" nhất!" },
+    { k:["chinh mau","mau phim","cinematic","color","mau dep","tong mau","grading"], a:"🎨 Chỉnh màu cinematic nhanh:\n1. Tăng nhẹ Contrast, giảm một chút Highlights, nâng Shadows → ra chất phim.\n2. Giảm Saturation tổng, nhưng tăng riêng tông da/cam.\n3. Thêm chút ám xanh ở vùng tối (teal) + ấm ở vùng sáng (orange) = look \"teal & orange\".\n4. Hoặc dùng LUT có sẵn rồi giảm cường độ ~50%." },
+    { k:["chuyen canh","transition","hieu ung chuyen"], a:"🔄 Chuyển cảnh mượt:\n• Đơn giản, sạch: dùng cắt thẳng (hard cut) đúng nhịp nhạc.\n• Mượt: Zoom in/out hoặc trượt (whip/pan) giữa 2 cảnh.\n• Match-cut: kết thúc cảnh A và mở cảnh B cùng bố cục/chuyển động.\nĐừng lạm dụng quá nhiều hiệu ứng — 1–2 kiểu xuyên suốt là đẹp nhất!" },
+    { k:["cat ghep","cat video","trim","cat canh","ghep video"], a:"✂️ Cắt ghép cơ bản:\n1. Nhập clip → cắt bỏ đoạn thừa, giữ những khoảnh khắc \"đắt\".\n2. Sắp theo mạch: mở đầu hút mắt → nội dung → kết.\n3. Giữ nhịp nhanh, mỗi cảnh đừng quá dài.\n4. Cắt theo nhịp nhạc cho cuốn." },
+    { k:["am thanh","tieng","loc tieng","long nhac","tach nhac","audio","loc on"], a:"🔊 Âm thanh:\n• Giảm tiếng ồn: dùng tính năng Giảm tiếng ồn (Reduce noise) trong CapCut.\n• Trộn nhạc nền nhỏ hơn giọng nói (nhạc ~ -18dB so với thoại).\n• Thêm hiệu ứng tiếng (whoosh, pop) ở các điểm chuyển cảnh cho sinh động." },
+    { k:["chu","caption text","phu de","sub","text","tieu de tren video"], a:"📝 Chữ & phụ đề:\n• CapCut có nút \"Tự động tạo phụ đề\" — nhận tiếng Việt khá ổn.\n• Chọn font dày, rõ; thêm viền/đổ bóng để chữ nổi trên nền.\n• Cho chữ xuất hiện đúng lúc nói, đừng để quá lâu trên màn hình." },
+    { k:["xoa phong","tach nen","chroma","phong xanh","green screen","xoa nen"], a:"🟢 Tách nền/phông xanh:\n1. Quay trên nền xanh lá đều màu, đủ sáng.\n2. CapCut: thêm clip → Cắt ra (Cutout) → Phông nền chroma → chọn màu xanh.\n3. Tinh chỉnh Cường độ & Độ mịn cho viền sạch." },
+    { k:["xuat video","export","chat luong","1080","4k","render","do phan giai"], a:"📤 Xuất video chuẩn:\n• Độ phân giải 1080p (hoặc 4K nếu máy khoẻ), 30 hoặc 60fps.\n• Bitrate để \"Cao\" cho nét.\n• Quay/đăng dọc 9:16 cho TikTok/Reels, ngang 16:9 cho YouTube." },
+    { k:["slow motion","quay cham","60fps","lam muot","toc do","speed"], a:"🐢 Slow-motion mượt:\n• Quay sẵn ở 60fps (hoặc 120fps) rồi mới làm chậm.\n• Trong CapCut chỉnh Tốc độ < 1x; bật \"Làm mượt\" (optical flow) nếu có.\n• Đừng làm chậm clip quay 30fps quá nhiều → sẽ bị giật." },
+    { k:["phan mem","app edit","dung app nao","phan mem nao","app nao"], a:"📱 App edit gợi ý (đa số miễn phí):\n• Điện thoại: CapCut (dễ, mạnh), VN, hoặc InShot.\n• Máy tính: CapCut PC, DaVinci Resolve (free, chuyên), Premiere (trả phí).\nMới bắt đầu thì cứ CapCut là đủ \"chiến\"!" },
+    { k:["moi bat dau","hoc tu dau","newbie","bat dau edit","lo trinh"], a:"🌱 Lộ trình cho người mới:\n1. Tải CapCut, làm quen cắt ghép.\n2. Tập cắt theo nhịp nhạc.\n3. Học chỉnh màu cơ bản.\n4. Thêm chữ/phụ đề.\n5. Làm 1 video hoàn chỉnh ngắn rồi đăng. Cứ làm là lên tay nhanh lắm!" },
+
+    { k:["caption","viet caption","cap","loi tua"], a:"✍️ Mẹo viết caption hút:\n• Câu đầu phải gây tò mò hoặc chạm cảm xúc.\n• Ngắn gọn, có cá tính, thêm 1 emoji hợp vibe.\n• Kết bằng câu hỏi/CTA để người xem bình luận.\nVí dụ: \"Ngồi edit cả đêm chỉ để bạn xem 15 giây 🥹 Bạn thấy đáng không?\"" },
+    { k:["hashtag","tag","the bai"], a:"#️⃣ Bộ hashtag gợi ý:\n#edit #capcut #hoctedit #editvideo #xuhuong #fyp #viral #vietnam\nMẹo: trộn 3 nhóm — hashtag lớn (#fyp), hashtag ngách (#hoctedit), và hashtag riêng của bạn (#taphoaonline)." },
+    { k:["tieu de","title","giat tit","dat ten video"], a:"🏷️ Công thức tiêu đề giật tít:\n• \"Cách [làm X] chỉ trong [thời gian]\"\n• \"Mình đã [kết quả] nhờ [cách] này\"\n• \"Đừng edit nếu chưa biết [mẹo] này\"\n• \"99% người mới sai ở bước [N]\"\nNói chủ đề cụ thể đi, mình viết 10 cái cho!" },
+    { k:["tha thinh","thinh","caption yeu","crush"], a:"💘 Caption thả thính:\n• \"Anh không giỏi edit, chỉ giỏi để ý em thôi.\"\n• \"Video này nhạt, nhưng vẫn hơn ngày không có em.\"\n• \"Tua đi tua lại, vẫn dừng ở nụ cười của em.\"\nMuốn theo chủ đề riêng thì nói mình biết nha!" },
+    { k:["y tuong","idea","lam video gi","content","quay gi"], a:"💡 Ý tưởng video edit:\n• Before/After một bản edit.\n• \"1 ngày của dân edit\".\n• Hướng dẫn 1 hiệu ứng trong 15 giây.\n• Tổng hợp khoảnh khắc theo 1 bài nhạc hot.\n• Thử thách edit cùng 1 clip nhiều phong cách." },
+    { k:["trend","xu huong","dang hot","viral"], a:"🔥 Bắt trend: mở TikTok phần Khám phá, để ý nhạc/hiệu ứng đang lặp lại nhiều. Làm theo trend nhưng thêm chất riêng (cách cắt, caption) để nổi bật. Đăng sớm khi trend mới lên sẽ dễ viral hơn!" },
+
+    { k:["cam on","thanks","thank you","cam on ban"], a:"Không có gì đâu! 🥰 Cần gì cứ hỏi mình nha. Chúc bạn edit ra video thật chất!" },
+    { k:["tao anh","ve anh","tao hinh","sinh anh","ve hinh"], a:"Mình tạo nội dung dạng chữ (ý tưởng, caption, hashtag, kịch bản) chứ chưa vẽ được ảnh nha 🙈 Bạn cần ý tưởng hình ảnh thì mình mô tả ý concept cho bạn dựng!" }
+  ];
+
+  var FALLBACK = "Câu này hơi ngoài tầm của chế độ trả lời nhanh 😅 Bạn thử hỏi về edit video, caption/hashtag, hoặc về kênh nha — hoặc bấm \"🧠 Bật AI thông minh\" (góc trên) để mình trả lời tự do mọi câu hỏi!";
+
+  function noAccent(s){ return (s||"").normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D'); }
+  function ruleAnswer(q){
+    var t=noAccent(q.toLowerCase()), best=null, score=0;
+    RULES.forEach(function(r){
+      var sc=0; r.k.forEach(function(kw){ if(t.indexOf(noAccent(kw))>-1) sc++; });
+      if(sc>score){ score=sc; best=r; }
+    });
+    return (best && score>0) ? best.a : FALLBACK;
+  }
+
+  var mode="chat", hist={chat:[],edit:[],create:[]}, busy=false;
+  var engine=null, engineLoading=false, engineReady=false, loadIdx=-1;
+
+  var panel=document.getElementById('aiPanel'), launcher=document.getElementById('aiLauncher');
+  var tabs=document.getElementById('aiTabs'), msgs=document.getElementById('aiMsgs'), chips=document.getElementById('aiChips');
+  var inp=document.getElementById('aiInput'), sendBtn=document.getElementById('aiSend');
+  var tagline=document.getElementById('aiTagline'), smartBtn=document.getElementById('aiSmart');
+
+  function M(){ return MODES[mode]; }
+
+  function buildTabs(){
+    tabs.innerHTML='';
+    Object.keys(MODES).forEach(function(k){
+      var c=MODES[k], b=document.createElement('button');
+      b.innerHTML=c.icon+' '+c.label;
+      if(k===mode){ b.classList.add('on'); b.style.background=c.ac; b.style.borderColor=c.ac; b.style.boxShadow='0 0 16px '+c.glow; }
+      b.onclick=function(){ mode=k; refresh(); };
+      tabs.appendChild(b);
+    });
+  }
+  function applyAccent(){
+    var c=M();
+    panel.style.setProperty('--ai-ac',c.ac); panel.style.setProperty('--ai-glow',c.glow);
+    tagline.textContent=c.tagline;
+    sendBtn.style.background='linear-gradient(120deg,'+c.ac+',#ffffff)'; sendBtn.style.boxShadow='0 0 16px '+c.glow;
+  }
+  function renderMsgs(){
+    var c=M(), list=hist[mode]; msgs.innerHTML='';
+    if(list.length===0){
+      var e=document.createElement('div'); e.className='ai-empty';
+      e.innerHTML='<div class="e">'+c.icon+'</div><p>'+c.intro+'</p>'; msgs.appendChild(e);
+    } else {
+      list.forEach(function(m){
+        var d=document.createElement('div'); d.className='ai-b '+(m.role==='user'?'user':'bot');
+        if(m.role==='user') d.style.background='linear-gradient(120deg,'+c.ac+',#ffffff)';
+        d.textContent=m.content; msgs.appendChild(d);
+      });
+    }
+    if(busy){
+      var t=document.createElement('div'); t.className='ai-typing';
+      for(var i=0;i<3;i++){ var s=document.createElement('i'); s.style.background=c.ac; s.style.animation='aiBlink 1.2s '+(i*0.18)+'s infinite'; t.appendChild(s); }
+      msgs.appendChild(t);
+    }
+    msgs.scrollTop=msgs.scrollHeight;
+  }
+  function renderChips(){
+    var c=M(); chips.innerHTML=''; if(hist[mode].length>0) return;
+    c.chips.forEach(function(txt){ var b=document.createElement('button'); b.textContent=txt; b.style.borderColor=c.ac+'66'; b.onclick=function(){ send(txt); }; chips.appendChild(b); });
+  }
+  function refresh(){ buildTabs(); applyAccent(); renderMsgs(); renderChips(); inp.placeholder='Nhắn cho '+M().label.toLowerCase()+'...'; }
+
+  function pushBot(text){ hist[mode].push({role:'assistant', content:text}); }
+  function updateSmartBtn(){
+    if(engineReady){ smartBtn.textContent='🧠 AI thông minh: BẬT'; smartBtn.className='ready'; }
+    else if(engineLoading){ smartBtn.textContent='⏳ Đang tải AI...'; smartBtn.className='loading'; }
+    else { smartBtn.textContent='🧠 Bật AI thông minh'; smartBtn.className=''; }
+  }
+
+  async function enableSmart(){
+    if(engineReady || engineLoading) return;
+    if(!('gpu' in navigator)){
+      busy=false;
+      pushBot("⚠️ Thiết bị/trình duyệt này chưa hỗ trợ WebGPU nên chưa bật được AI thông minh. Bạn vẫn dùng trả lời nhanh bình thường nha 👍 (Thử Chrome/Edge mới trên máy tính, hoặc trình duyệt điện thoại đời mới.)");
+      renderMsgs(); return;
+    }
+    engineLoading=true; updateSmartBtn();
+    hist[mode].push({role:'assistant', content:"⏳ Đang tải AI thông minh về máy bạn... (lần đầu hơi lâu, ~1GB, nên dùng wifi). Bạn cứ chờ chút nha."});
+    loadIdx=hist[mode].length-1; renderMsgs();
+    try{
+      var webllm = await import("https://esm.run/@mlc-ai/web-llm");
+      engine = await webllm.CreateMLCEngine(SMART_MODEL, {
+        initProgressCallback:function(p){
+          if(loadIdx>-1 && hist[mode][loadIdx]){
+            var pct = p && p.progress ? " ("+Math.round(p.progress*100)+"%)" : "";
+            hist[mode][loadIdx].content = "⏳ Đang tải AI thông minh"+pct+"...\n"+((p&&p.text)?p.text:"");
+            renderMsgs();
+          }
+        }
+      });
+      engineReady=true; engineLoading=false; updateSmartBtn();
+      if(loadIdx>-1) hist[mode][loadIdx].content="✅ AI thông minh đã sẵn sàng! Giờ mình trả lời tự do mọi câu hỏi rồi 😎 Hỏi mình thử xem!";
+      loadIdx=-1; renderMsgs();
+    }catch(err){
+      engineLoading=false; engineReady=false; updateSmartBtn();
+      if(loadIdx>-1) hist[mode][loadIdx].content="⚠️ Tải AI thông minh chưa được ("+((err&&err.message)||err)+"). Không sao, bạn vẫn dùng trả lời nhanh nha. Thường do trình duyệt chưa hỗ trợ WebGPU hoặc mạng yếu.";
+      loadIdx=-1; renderMsgs();
+    }
+  }
+
+  function send(text){
+    var content=(text!==undefined?text:inp.value).trim();
+    if(!content || busy) return;
+    inp.value=''; inp.style.height='auto';
+    hist[mode].push({role:'user', content:content});
+    busy=true; renderMsgs(); renderChips(); updateSend();
+
+    if(engineReady && engine){
+      var msgs2=[{role:'system', content:M().system}].concat(hist[mode].filter(function(m){return m.role==='user'||m.role==='assistant';}).map(function(m){return {role:m.role, content:m.content};}));
+      engine.chat.completions.create({ messages:msgs2, temperature:0.8, max_tokens:800 })
+        .then(function(r){ busy=false; var reply=(r&&r.choices&&r.choices[0]&&r.choices[0].message)?r.choices[0].message.content:""; pushBot(reply||"Mình chưa nghĩ ra, thử lại nha!"); renderMsgs(); updateSend(); })
+        .catch(function(e){ busy=false; pushBot("⚠️ AI thông minh gặp lỗi: "+((e&&e.message)||e)+". Mình tạm trả lời nhanh nhé:\n\n"+ruleAnswer(content)); renderMsgs(); updateSend(); });
+    } else {
+      setTimeout(function(){ busy=false; pushBot(ruleAnswer(content)); renderMsgs(); updateSend(); }, 350);
+    }
+  }
+
+  function updateSend(){ sendBtn.disabled = busy || !inp.value.trim(); }
+
+  launcher.onclick=function(){ panel.classList.add('open'); launcher.style.display='none'; refresh(); updateSmartBtn(); inp.focus(); };
+  document.getElementById('aiClose').onclick=function(){ panel.classList.remove('open'); launcher.style.display='flex'; };
+  smartBtn.onclick=enableSmart;
+  sendBtn.onclick=function(){ send(); };
+  inp.addEventListener('input', function(){ this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,96)+'px'; updateSend(); });
+  inp.addEventListener('keydown', function(e){ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(); } });
+  updateSend(); updateSmartBtn();
+})();
+</script>
+<!-- ==================== /AI WIDGET ==================== -->
+
 </body>
 </html>
