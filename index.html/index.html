@@ -328,6 +328,30 @@
     .cv-close{display:none !important;}
     @page{ margin:14mm; }
   }
+  /* ====== GAME CTA ====== */
+  .gamecta{position:relative; z-index:2; padding:4vh 24px 16vh; display:flex; justify-content:center;}
+  .game-grid{display:flex; gap:24px; flex-wrap:wrap; justify-content:center; max-width:1000px; width:100%;}
+  .game-card{flex:1 1 360px; max-width:460px; text-align:center; padding:42px 34px;
+    border-radius:16px; background:rgba(22,12,38,.5);
+    border:1px solid rgba(124,255,143,.35); backdrop-filter:blur(8px);
+    box-shadow:0 22px 60px rgba(15,5,30,.5), 0 0 46px rgba(124,255,143,.12);}
+  .game-card.hard{border-color:rgba(255,79,120,.4);
+    box-shadow:0 22px 60px rgba(15,5,30,.5), 0 0 46px rgba(255,79,120,.14);}
+  .game-card.hard .kicker{color:#ff6f9c;}
+  .game-card.hard h3{text-shadow:0 0 26px rgba(255,79,120,.5);}
+  .game-btn.red{background:linear-gradient(120deg,#ff5f8f,#ff3d3d); color:#fff;}
+  .game-btn.red:hover{box-shadow:0 0 32px rgba(255,79,120,.6);}
+  .game-card .kicker{font-family:'Marcellus SC'; letter-spacing:5px; font-size:11px;
+    text-transform:uppercase; color:#7cff8f; opacity:.85;}
+  .game-card .ico{font-size:34px; margin-bottom:8px;}
+  .game-card h3{font-family:'Cinzel'; font-weight:800; font-size:clamp(28px,5vw,42px);
+    color:#fff; margin:10px 0 14px; text-shadow:0 0 26px rgba(124,255,143,.45);}
+  .game-card p{font-size:15px; line-height:1.7; opacity:.86; margin-bottom:28px;}
+  .game-btn{display:inline-block; font-family:'Marcellus SC'; letter-spacing:4px;
+    font-size:13px; text-transform:uppercase; text-decoration:none; color:#0c1f12;
+    background:linear-gradient(120deg,#7cff8f,#5fe8ff); padding:15px 42px; border-radius:40px;
+    font-weight:700; transition:.35s;}
+  .game-btn:hover{box-shadow:0 0 32px rgba(124,255,143,.6); transform:translateY(-3px); letter-spacing:6px;}
 </style>
 </head>
 <body>
@@ -391,9 +415,34 @@
   <!-- INTRO -->
   <section class="intro" id="explore">
     <h2 class="reveal">Học edit — biến ý tưởng thành thước phim của riêng bạn.</h2>
-    <p class="reveal">Xin chào các bạn, mình là newbie mới học edit từ 4/6/2026, mình có lập 2 kênh tik tok and phở bò để chia sẻ những kiến thức bổ ích. rất mong nhận được sự ủng hộ của mọi người^.^</p>
+    <p class="reveal">Ở đây mình chia sẻ tất tần tật về edit: từ cách cắt ghép, chỉnh màu,
+       bắt nhịp nhạc cho tới những hiệu ứng nhỏ làm video "lên tay" ngay. Không cần máy
+       cấu hình khủng hay phần mềm đắt tiền — chỉ cần bạn thích là bắt đầu được. Mình đi
+       từ những bước cơ bản nhất, dễ hiểu, dễ làm theo, để ai cũng tự tay tạo ra video và
+       hình ảnh thật "chất" theo phong cách của mình.</p>
   </section>
 
+  <!-- GAME CTA -->
+  <section class="gamecta" id="game">
+    <div class="game-grid">
+      <div class="game-card easy reveal">
+        <div class="ico">🎮</div>
+        <div class="kicker">Chế độ thư giãn</div>
+        <h3>Game dễ</h3>
+        <p>Một ván "Thế Chiến Ảo" nhẹ nhàng để giải lao giữa giờ edit. Vào chơi cho vui,
+           không áp lực — ai cũng bắn được!</p>
+        <a class="game-btn" href="game222.html" target="_blank" rel="noopener">Chơi ngay →</a>
+      </div>
+      <div class="game-card hard reveal">
+        <div class="ico">💀</div>
+        <div class="kicker">Thử thách cực đại</div>
+        <h3>Game siêu khó</h3>
+        <p>Phiên bản "Thế Chiến Ảo" khó nhằn dành cho dân lì đòn. Chậm phản xạ một nhịp
+           là "toang" ngay — bạn dám thử không?</p>
+        <a class="game-btn red" href="gamePLAY.html" target="_blank" rel="noopener">Vào thử →</a>
+      </div>
+    </div>
+  </section>
 
   <div class="vignette"></div>
   <div class="grain"></div>
