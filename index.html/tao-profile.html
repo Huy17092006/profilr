@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="vi"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tạo Profile — TẠP HÓA ONLINE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;500;600;700&family=Marcellus&family=Orbitron:wght@600;800&family=Pacifico&family=Playfair+Display:wght@600;800&family=Poppins:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif; background:#0f0b18; color:#ece9f5; min-height:100vh;}
+  body::before{content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:radial-gradient(circle at 85% -5%, rgba(255,95,168,.12), transparent 45%),
+               radial-gradient(circle at 5% 105%, rgba(95,232,255,.10), transparent 45%);}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 22px; position:relative; z-index:1;}
+
+  header{display:flex; align-items:center; justify-content:space-between; padding:20px 0;}
+  .logo{font-family:'Cinzel',serif; font-weight:800; font-size:20px; letter-spacing:1px;}
+  .logo span{background:linear-gradient(120deg,#ff5fa8,#5fe8ff); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .back{color:#9b94b3; text-decoration:none; font-size:14px; font-weight:500; border:1px solid #2a2440;
+    padding:8px 16px; border-radius:30px; background:#171228; transition:.2s;}
+  .back:hover{color:#fff; border-color:#ff5fa8;}
+
+  .hero{text-align:center; padding:24px 0 18px;}
+  .hero h1{font-family:'Cinzel',serif; font-weight:800; font-size:clamp(26px,5vw,40px); line-height:1.1;}
+  .hero h1 span{background:linear-gradient(120deg,#ff5fa8,#5fe8ff); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .hero p{color:#9b94b3; font-size:15px; margin-top:10px;}
+
+  .layout{display:grid; grid-template-columns:1fr 380px; gap:26px; padding:14px 0 70px; align-items:start;}
+  @media(max-width:880px){ .layout{grid-template-columns:1fr;} .preview-wrap{position:static !important; order:-1;} }
+
+  .panel{background:#15102a; border:1px solid #261d44; border-radius:18px; padding:22px;}
+  .panel h2{font-size:15px; font-weight:700; margin-bottom:14px; letter-spacing:.3px;}
+  .panel h2 .n{color:#ff8ac4;}
+
+  .tpls{display:grid; grid-template-columns:repeat(5,1fr); gap:9px; margin-bottom:8px;}
+  @media(max-width:560px){ .tpls{grid-template-columns:repeat(4,1fr);} }
+  .tpl{cursor:pointer; border-radius:11px; overflow:hidden; border:2px solid transparent; aspect-ratio:3/4;
+    position:relative; transition:.2s; background:#0c0a14;}
+  .tpl.on{border-color:#ff5fa8; box-shadow:0 0 0 3px rgba(255,95,168,.25);}
+  .tpl .mini{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:6px;}
+  .tpl .ava{width:34%; aspect-ratio:1; border-radius:50%;}
+  .tpl .l1{width:54%; height:6px; border-radius:4px;}
+  .tpl .l2{width:38%; height:5px; border-radius:4px; opacity:.7;}
+  .tpl .tag{position:absolute; bottom:5px; left:0; right:0; text-align:center; font-size:8.5px; color:#fff; font-weight:600; text-shadow:0 1px 3px #000;}
+
+  label{display:block; font-size:12px; color:#b7afd0; font-weight:600; margin:14px 0 5px; letter-spacing:.3px;}
+  input[type=text], textarea{width:100%; padding:11px 13px; border-radius:10px; border:1px solid #2c2350;
+    background:#0e0b1c; color:#fff; font-family:'Inter'; font-size:14px; outline:none; transition:.2s;}
+  input:focus, textarea:focus{border-color:#5fe8ff; box-shadow:0 0 0 3px rgba(95,232,255,.14);}
+  textarea{resize:vertical; min-height:60px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .uploader{display:flex; align-items:center; gap:12px; margin-top:5px;}
+  .uploader .pv{width:56px; height:56px; border-radius:50%; background:#0e0b1c center/cover no-repeat; border:1px solid #2c2350; flex:0 0 auto;}
+  .uploader label.btn{display:inline-block; cursor:pointer; margin:0; padding:10px 16px; border-radius:10px;
+    background:#241a44; color:#cfc7ec; border:1px solid #3a2d63; font-size:13px; font-weight:600;}
+  .uploader input{display:none;}
+
+  .dl{margin-top:20px; width:100%; padding:14px; border:none; border-radius:12px; cursor:pointer;
+    font-family:'Inter'; font-weight:700; font-size:15px; color:#0f0b18;
+    background:linear-gradient(120deg,#ff5fa8,#5fe8ff); box-shadow:0 8px 24px rgba(255,95,168,.32); transition:.2s;}
+  .dl:hover{transform:translateY(-2px);}
+
+  .preview-wrap{position:sticky; top:20px;}
+  .preview-lab{font-size:12px; color:#9b94b3; text-transform:uppercase; letter-spacing:2px; text-align:center; margin-bottom:12px;}
+
+  /* ====== BASE CARD (thiết kế lại — phong cách thẻ hồ sơ hiện đại) ====== */
+  #card{--bg:#15102a; --bg2:#1d1538; --text:#fff; --muted:rgba(255,255,255,.66); --accent:#ff5fa8; --accent2:#5fe8ff;
+    --rolebg:rgba(255,255,255,.08); --rolebd:rgba(255,255,255,.18); --btn:rgba(255,255,255,.07); --btnbd:rgba(255,255,255,.16);
+    --radius:26px; --font:'Inter',sans-serif; --namefont:'Space Grotesk',sans-serif; --avshape:50%;
+    width:100%; max-width:340px; margin:0 auto; border-radius:var(--radius); overflow:hidden; position:relative;
+    background:linear-gradient(180deg,var(--bg2),var(--bg)); color:var(--text); font-family:var(--font); padding:0 0 24px;
+    box-shadow:0 30px 80px rgba(0,0,0,.55); border:1px solid rgba(255,255,255,.08);}
+  #card .cover{height:118px; position:relative; overflow:hidden;
+    background:linear-gradient(120deg,var(--accent),var(--accent2),var(--accent)); background-size:220% 220%; animation:cardGrad 7s ease infinite;}
+  #card .cover::after{content:""; position:absolute; inset:0;
+    background:radial-gradient(130px 80px at 78% 16%, rgba(255,255,255,.42), transparent 70%),
+               radial-gradient(100px 70px at 16% 86%, rgba(255,255,255,.22), transparent 70%);}
+  @keyframes cardGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  @keyframes cardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  #card .avatar{width:104px; height:104px; border-radius:var(--avshape); margin:-56px auto 0; position:relative; z-index:2;
+    background:#222 center/cover no-repeat; overflow:hidden;
+    box-shadow:0 0 0 4px var(--bg), 0 0 0 6px var(--accent), 0 10px 30px rgba(0,0,0,.45); animation:cardFloat 5s ease-in-out infinite;}
+  #card .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
+  #card .avatar .ph{display:flex; align-items:center; justify-content:center; height:100%; font-size:40px; opacity:.5;}
+  #card .name{font-family:var(--namefont); font-weight:700; font-size:24px; text-align:center; margin:18px 22px 8px; line-height:1.15; letter-spacing:.2px;}
+  #card .role{width:max-content; max-width:84%; margin:0 auto 14px; padding:5px 15px; border-radius:30px; font-size:11px; font-weight:700;
+    text-transform:uppercase; letter-spacing:1.4px; color:var(--accent); text-align:center;
+    background:var(--rolebg); border:1px solid var(--rolebd);}
+  #card .bio{text-align:center; font-size:13.5px; color:var(--muted); line-height:1.65; margin:0 26px 20px;}
+  #card .links{display:flex; flex-direction:column; gap:10px; margin:0 24px;}
+  #card .links a{position:relative; display:flex; align-items:center; justify-content:center; text-decoration:none; padding:13px 16px;
+    border-radius:14px; font-weight:600; font-size:14px; color:var(--text); background:var(--btn); border:1px solid var(--btnbd); transition:.25s;}
+  #card .links a::after{content:"\2197"; position:absolute; right:15px; opacity:.45; font-size:13px;}
+  #card .links a:hover{transform:translateY(-2px); border-color:var(--accent); box-shadow:0 8px 22px rgba(0,0,0,.35);}
+
+  /* ====== 10 MẪU ====== */
+  /* 1. NEON */
+  #card[data-tpl="neon"]{--bg:#0d0720; --bg2:#1b0e36; --accent:#ff4fa3; --accent2:#5fe8ff; --namefont:'Orbitron',sans-serif;
+    --btn:rgba(255,255,255,.05); --btnbd:rgba(255,79,163,.4); --rolebg:rgba(255,79,163,.12); --rolebd:rgba(255,79,163,.45);}
+  #card[data-tpl="neon"] .cover{background:linear-gradient(120deg,#ff4fa3,#a64bff,#5fe8ff);}
+  #card[data-tpl="neon"] .name{text-shadow:0 0 18px rgba(255,79,163,.65);}
+  #card[data-tpl="neon"] .links a:hover{box-shadow:0 0 22px rgba(255,79,163,.4);}
+
+  /* 2. TỐI GIẢN */
+  #card[data-tpl="clean"]{--bg:#ffffff; --bg2:#ffffff; --text:#14171d; --muted:#5b6472; --accent:#4f7cff; --accent2:#9db8ff;
+    --rolebg:#eef3ff; --rolebd:#dde6fb; --btn:#f3f6fc; --btnbd:#e6ebf5; --namefont:'Poppins',sans-serif;
+    box-shadow:0 24px 60px rgba(40,60,110,.18);}
+  #card[data-tpl="clean"] .cover{height:84px;}
+
+  /* 3. HOÀNG HÔN */
+  #card[data-tpl="sunset"]{--bg:#2a0f2e; --bg2:#42163a; --text:#fff7f0; --muted:rgba(255,247,240,.78); --accent:#ff8a5b; --accent2:#ffd16b;
+    --rolebg:rgba(255,138,91,.16); --rolebd:rgba(255,138,91,.45); --btn:rgba(255,255,255,.08); --btnbd:rgba(255,209,107,.35); --namefont:'Poppins',sans-serif;}
+  #card[data-tpl="sunset"] .cover{background:linear-gradient(120deg,#ff9a56,#ff5f8f,#c9408a,#7a3aa0);}
+
+  /* 4. KÍNH MỜ */
+  #card[data-tpl="glass"]{--bg:#161d33; --bg2:#243056; --text:#eef4ff; --muted:rgba(238,244,255,.74); --accent:#7dd3fc; --accent2:#c4b5fd;
+    --rolebg:rgba(255,255,255,.12); --rolebd:rgba(255,255,255,.3); --btn:rgba(255,255,255,.13); --btnbd:rgba(255,255,255,.28);}
+  #card[data-tpl="glass"]{background:linear-gradient(150deg,#6d8bff,#9b6bff 55%,#22d3ee);}
+  #card[data-tpl="glass"] .cover{background:linear-gradient(120deg,#5eead4,#818cf8,#e879f9);}
+
+  /* 5. SANG TRỌNG */
+  #card[data-tpl="luxury"]{--bg:#0a0a0a; --bg2:#1a1510; --text:#f4e8c6; --muted:#b6a578; --accent:#e8c879; --accent2:#bb8e3c;
+    --rolebg:rgba(232,200,121,.1); --rolebd:rgba(232,200,121,.45); --btn:rgba(232,200,121,.06); --btnbd:rgba(232,200,121,.4);
+    --namefont:'Playfair Display',serif;}
+  #card[data-tpl="luxury"] .cover{height:88px; background:linear-gradient(120deg,#1a1308,#e8c879,#8a6a25,#1a1308);}
+  #card[data-tpl="luxury"] .name{letter-spacing:.5px;}
+
+  /* 6. PASTEL */
+  #card[data-tpl="pastel"]{--bg:#fff3f8; --bg2:#fbeefa; --text:#5b4a5e; --muted:#9a8896; --accent:#ff86b3; --accent2:#a9b8ff;
+    --rolebg:#fff; --rolebd:#ffd9e8; --btn:#ffffff; --btnbd:#ffdcec; --radius:32px; --namefont:'Poppins',sans-serif;
+    box-shadow:0 24px 60px rgba(255,134,179,.28);}
+  #card[data-tpl="pastel"] .cover{background:linear-gradient(120deg,#ffd6e8,#e0d6ff,#d6f0ff);}
+
+  /* 7. CYBER */
+  #card[data-tpl="cyber"]{--bg:#04070d; --bg2:#07131a; --text:#c6ffe4; --muted:#74b89a; --accent:#19ff7a; --accent2:#00e0ff;
+    --rolebg:rgba(25,255,122,.1); --rolebd:rgba(25,255,122,.4); --btn:rgba(25,255,122,.06); --btnbd:rgba(25,255,122,.35);
+    --namefont:'Space Grotesk',sans-serif; --avshape:18px;}
+  #card[data-tpl="cyber"] .cover{background:linear-gradient(120deg,#003b2a,#19ff7a,#00e0ff,#003b2a);}
+  #card[data-tpl="cyber"] .name{text-shadow:0 0 16px rgba(25,255,122,.6);}
+
+  /* 8. THIÊN NHIÊN */
+  #card[data-tpl="nature"]{--bg:#f4f0e6; --bg2:#efe9d6; --text:#3b3526; --muted:#7d745f; --accent:#7d9b53; --accent2:#cbb277;
+    --rolebg:#fff; --rolebd:#e2dac4; --btn:#ffffff; --btnbd:#e4ddc8; --namefont:'Marcellus',serif;
+    box-shadow:0 24px 60px rgba(80,75,50,.22);}
+  #card[data-tpl="nature"] .cover{background:linear-gradient(120deg,#9caf7a,#c2b483,#cbb277);}
+
+  /* 9. VAPORWAVE */
+  #card[data-tpl="vapor"]{--bg:#1e1140; --bg2:#2e1860; --text:#fde4ff; --muted:rgba(253,228,255,.78); --accent:#ff6ec7; --accent2:#7efff5;
+    --rolebg:rgba(255,110,199,.14); --rolebd:rgba(126,255,245,.4); --btn:rgba(255,255,255,.08); --btnbd:rgba(126,255,245,.35);
+    --namefont:'Pacifico',cursive;}
+  #card[data-tpl="vapor"] .cover{background:linear-gradient(120deg,#7efff5,#a06bff,#ff6ec7);}
+  #card[data-tpl="vapor"] .name{text-shadow:2px 2px 0 rgba(126,255,245,.5);}
+
+  /* 10. CHUYÊN NGHIỆP */
+  #card[data-tpl="corp"]{--bg:#0e1a2b; --bg2:#16263e; --text:#eaf1fb; --muted:#9bb0cc; --accent:#3b82f6; --accent2:#60a5fa;
+    --rolebg:rgba(59,130,246,.14); --rolebd:rgba(59,130,246,.4); --btn:rgba(59,130,246,.1); --btnbd:rgba(59,130,246,.3);
+    --namefont:'Poppins',sans-serif; --avshape:20px;}
+  #card[data-tpl="corp"] .cover{height:88px; background:linear-gradient(120deg,#1e3a5f,#3b82f6,#60a5fa);}
+
+  /* ====== HIỆU ỨNG NỀN ĐỘNG cho từng mẫu (CSS thuần) ====== */
+  #card .cover .fx{position:absolute; inset:0; overflow:hidden; pointer-events:none;}
+  #card .cover .fx::before,#card .cover .fx::after{content:""; position:absolute;}
+  @keyframes fxTwinkle{0%,100%{opacity:.45}50%{opacity:1}}
+  @keyframes fxMeteor{0%{transform:translate(0,0) rotate(28deg);opacity:0}10%{opacity:1}70%{opacity:1}100%{transform:translate(470px,250px) rotate(28deg);opacity:0}}
+  @keyframes fxDrift{from{transform:translateX(0)}to{transform:translateX(470px)}}
+  @keyframes fxFly{0%{transform:translate(0,0)}100%{transform:translate(430px,-8px)}}
+  @keyframes fxRise{0%{transform:translateY(0);opacity:0}20%{opacity:1}100%{transform:translateY(-140px);opacity:0}}
+  @keyframes fxFloatX{0%{transform:translate(0,0)}50%{transform:translate(220px,10px)}100%{transform:translate(430px,-6px)}}
+  @keyframes fxSweep{0%{transform:translateX(0) rotate(20deg);opacity:0}20%{opacity:1}80%{opacity:1}100%{transform:translateX(470px) rotate(20deg);opacity:0}}
+  @keyframes fxFall{from{background-position:0 0}to{background-position:0 28px}}
+  @keyframes fxScan{0%{transform:translateY(0);opacity:0}10%{opacity:1}100%{transform:translateY(150px);opacity:0}}
+  @keyframes fxLeaf{0%{transform:translate(0,0) rotate(0);opacity:0}15%{opacity:1}100%{transform:translate(-30px,150px) rotate(160deg);opacity:0}}
+  @keyframes fxGrid{from{background-position:center 0}to{background-position:center 26px}}
+
+  /* 1. NEON — mưa sao băng */
+  #card[data-tpl="neon"] .cover .fx{background-image:
+    radial-gradient(1.5px 1.5px at 20% 30%,#fff,transparent),radial-gradient(1.5px 1.5px at 60% 20%,#fff,transparent),
+    radial-gradient(1px 1px at 80% 50%,#fff,transparent),radial-gradient(1.5px 1.5px at 35% 70%,#fff,transparent),
+    radial-gradient(1px 1px at 90% 80%,#fff,transparent),radial-gradient(1px 1px at 12% 85%,#fff,transparent);
+    animation:fxTwinkle 3s ease-in-out infinite;}
+  #card[data-tpl="neon"] .cover .fx::before,#card[data-tpl="neon"] .cover .fx::after{
+    width:80px;height:2px;top:-12px;left:-90px;border-radius:2px;background:linear-gradient(90deg,transparent,#fff);
+    box-shadow:0 0 8px #fff;transform:rotate(28deg);animation:fxMeteor 2.6s linear infinite;}
+  #card[data-tpl="neon"] .cover .fx::after{top:20px;animation-delay:1.3s;animation-duration:3.3s;}
+
+  /* 2. TỐI GIẢN — bong bóng nhẹ bay lên */
+  #card[data-tpl="clean"] .cover .fx::before,#card[data-tpl="clean"] .cover .fx::after{
+    width:14px;height:14px;border-radius:50%;bottom:-20px;left:30%;background:rgba(79,124,255,.22);animation:fxRise 6s ease-in infinite;}
+  #card[data-tpl="clean"] .cover .fx::after{left:66%;width:9px;height:9px;animation-delay:2.6s;animation-duration:7.2s;}
+
+  /* 3. HOÀNG HÔN — mây trôi + máy bay */
+  #card[data-tpl="sunset"] .cover .fx::before{width:90px;height:28px;left:-110px;top:26px;border-radius:30px;
+    background:rgba(255,255,255,.55);filter:blur(6px);animation:fxDrift 10s linear infinite;}
+  #card[data-tpl="sunset"] .cover .fx::after{content:"\2708";font-size:18px;color:#fff;top:14px;left:-30px;
+    text-shadow:0 2px 6px rgba(0,0,0,.3);animation:fxFly 7s linear infinite;}
+
+  /* 4. KÍNH MỜ — bong bóng ánh sáng trôi */
+  #card[data-tpl="glass"] .cover .fx::before,#card[data-tpl="glass"] .cover .fx::after{
+    width:46px;height:46px;border-radius:50%;top:18px;left:-46px;
+    background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.55),rgba(255,255,255,0) 70%);
+    animation:fxFloatX 8s ease-in-out infinite;}
+  #card[data-tpl="glass"] .cover .fx::after{width:28px;height:28px;top:52px;animation-delay:2s;animation-duration:10s;}
+
+  /* 5. SANG TRỌNG — ánh sáng quét + bụi vàng lấp lánh */
+  #card[data-tpl="luxury"] .cover .fx{background-image:
+    radial-gradient(1.5px 1.5px at 25% 40%,#ffe9a8,transparent),radial-gradient(1px 1px at 70% 60%,#ffe9a8,transparent),
+    radial-gradient(1px 1px at 50% 22%,#ffe9a8,transparent);animation:fxTwinkle 3.5s ease-in-out infinite;}
+  #card[data-tpl="luxury"] .cover .fx::before{width:60px;height:220px;top:-50px;left:-90px;transform:rotate(20deg);
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);animation:fxSweep 4.5s ease-in-out infinite;}
+
+  /* 6. PASTEL — tim bay lên */
+  #card[data-tpl="pastel"] .cover .fx::before,#card[data-tpl="pastel"] .cover .fx::after{
+    content:"\2665";font-size:14px;color:rgba(255,134,179,.85);bottom:-16px;left:28%;animation:fxRise 6.5s ease-in infinite;}
+  #card[data-tpl="pastel"] .cover .fx::after{left:64%;font-size:11px;color:rgba(169,184,255,.9);animation-delay:3s;animation-duration:7.5s;}
+
+  /* 7. CYBER — mã rơi kiểu Matrix + scanline */
+  #card[data-tpl="cyber"] .cover .fx{background-image:repeating-linear-gradient(0deg,rgba(25,255,122,.18) 0 2px,transparent 2px 7px);
+    background-size:100% 28px;animation:fxFall 1.1s linear infinite;opacity:.55;}
+  #card[data-tpl="cyber"] .cover .fx::before{left:0;right:0;height:18px;top:-18px;
+    background:linear-gradient(rgba(25,255,122,.4),transparent);animation:fxScan 3s linear infinite;}
+
+  /* 8. THIÊN NHIÊN — lá rơi */
+  #card[data-tpl="nature"] .cover .fx::before,#card[data-tpl="nature"] .cover .fx::after{
+    content:"\1F343";font-size:15px;top:-18px;left:26%;animation:fxLeaf 6s linear infinite;}
+  #card[data-tpl="nature"] .cover .fx::after{left:66%;font-size:12px;animation-delay:3s;animation-duration:7.5s;}
+
+  /* 9. VAPORWAVE — lưới retro chạy + mặt trời */
+  #card[data-tpl="vapor"] .cover .fx{background-image:
+    linear-gradient(rgba(126,255,245,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(126,255,245,.5) 1px,transparent 1px);
+    background-size:26px 26px;-webkit-mask:linear-gradient(transparent 38%,#000);mask:linear-gradient(transparent 38%,#000);
+    animation:fxGrid 2s linear infinite;opacity:.6;}
+  #card[data-tpl="vapor"] .cover .fx::before{width:54px;height:54px;border-radius:50%;left:50%;top:8px;margin-left:-27px;
+    background:linear-gradient(#fff36b,#ff6ec7);box-shadow:0 0 26px rgba(255,110,199,.6);}
+
+  /* 10. CHUYÊN NGHIỆP — ánh sáng quét chéo + hạt trôi */
+  #card[data-tpl="corp"] .cover .fx::before{width:70px;height:220px;top:-50px;left:-100px;transform:rotate(18deg);
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.32),transparent);animation:fxSweep 5s ease-in-out infinite;}
+  #card[data-tpl="corp"] .cover .fx::after{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.6);top:30px;left:-12px;
+    animation:fxDrift 7s linear infinite;}
+
+  /* Mẫu Tối giản: ảnh nền do khách tự tải lên */
+  #card[data-tpl="clean"].has-bg .cover{height:152px; background:var(--userbg) center/cover no-repeat;}
+  #card[data-tpl="clean"].has-bg .cover .fx{display:none;}
+  #card[data-tpl="clean"].has-bg .cover::after{background:linear-gradient(transparent 52%, #ffffff);}
+
+  /* ====== PAYMENT ====== */
+  .pay-row{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px;
+    background:#0e0b1c; border:1px solid #2c2350; border-radius:12px; padding:14px 16px;}
+  .pay-name{font-weight:700; font-size:15px;}
+  .pay-sub{font-size:12px; color:#9b94b3; margin-top:3px;}
+  .pay-price{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:#ffd36b; white-space:nowrap;}
+  .paybtn{width:100%; padding:14px; border:none; border-radius:12px; cursor:pointer; font-family:'Inter';
+    font-weight:700; font-size:15px; color:#08120c; background:linear-gradient(120deg,#7cff8f,#5fe8ff);
+    box-shadow:0 8px 24px rgba(124,255,143,.3); transition:.2s;}
+  .paybtn:hover{transform:translateY(-2px);}
+
+  .pm{position:fixed; inset:0; z-index:80; background:rgba(8,5,16,.82); backdrop-filter:blur(8px);
+    display:none; align-items:center; justify-content:center; padding:18px;}
+  .pm.open{display:flex;}
+  .pm-box{width:100%; max-width:380px; background:#15102a; border:1px solid #2c2350; border-radius:20px;
+    padding:24px 22px; position:relative; max-height:92vh; overflow-y:auto; box-shadow:0 30px 80px rgba(0,0,0,.6);}
+  .pm-x{position:absolute; top:14px; right:14px; width:34px; height:34px; border-radius:50%; cursor:pointer;
+    border:1px solid #3a2d63; background:#241a44; color:#fff; font-size:16px;}
+  .pm-head{font-family:'Cinzel',serif; font-weight:800; font-size:20px; text-align:center;}
+  .pm-sub{text-align:center; color:#ffd36b; font-weight:600; margin:6px 0 16px;}
+  .pm-qr{background:#fff; border-radius:14px; padding:10px; width:230px; margin:0 auto 16px; min-height:230px; display:flex; align-items:center; justify-content:center;}
+  .pm-qr img{width:100%; display:block; border-radius:6px;}
+  .pm-info{background:#0e0b1c; border:1px solid #2c2350; border-radius:12px; padding:12px 14px; font-size:13.5px;}
+  .pm-line{display:flex; justify-content:space-between; gap:10px; padding:6px 0; border-bottom:1px solid #221a3e;}
+  .pm-line:last-child{border:none;}
+  .pm-line span{color:#9b94b3;} .pm-line b{text-align:right; word-break:break-all;}
+  .cp{cursor:pointer; margin-left:6px; font-size:11px; padding:3px 8px; border-radius:6px; border:1px solid #3a2d63;
+    background:#241a44; color:#9fe6ff; font-family:'Inter'; font-weight:600;}
+  .pm-note{font-size:12.5px; color:#9b94b3; line-height:1.5; margin:14px 0; text-align:center;}
+  .pm-done{width:100%; padding:14px; border:none; border-radius:12px; cursor:pointer; font-family:'Inter';
+    font-weight:700; font-size:15px; color:#08120c; background:linear-gradient(120deg,#7cff8f,#5fe8ff); transition:.2s;}
+  .pm-done:hover{transform:translateY(-2px);}
+  .pm-thanks{display:none; margin-top:14px; padding:14px; border-radius:12px; font-size:13.5px; line-height:1.6;
+    background:rgba(124,255,143,.1); border:1px solid rgba(124,255,143,.35); color:#bfffce;}
+  .pm-thanks.show{display:block;}
+</style></head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">TẠP HÓA <span>PROFILE</span></div>
+    <a class="back" href="index.html">← Trang chính</a>
+  </header>
+
+  <div class="hero">
+    <h1>Tạo <span>Profile</span> của bạn</h1>
+    <p>Chọn 1 trong 10 mẫu · thêm ảnh của bạn · điền thông tin · tải về dùng ngay.</p>
+  </div>
+
+  <div class="layout">
+    <!-- CONTROLS -->
+    <div>
+      <div class="panel">
+        <h2><span class="n">1.</span> Chọn mẫu profile</h2>
+        <div class="tpls" id="tpls"></div>
+      </div>
+
+      <div class="panel" style="margin-top:18px;">
+        <h2><span class="n">2.</span> Thông tin của bạn</h2>
+
+        <label>Ảnh đại diện</label>
+        <div class="uploader">
+          <div class="pv" id="avaPv"></div>
+          <label class="btn" for="avaFile">📷 Tải ảnh lên</label>
+          <input type="file" id="avaFile" accept="image/*">
+        </div>
+
+        <label id="bgLabel">Ảnh nền <span style="opacity:.7">(cho mẫu Tối giản)</span></label>
+        <div class="uploader">
+          <div class="pv" id="bgPv"></div>
+          <label class="btn" for="bgFile">🖼️ Tải ảnh nền</label>
+          <input type="file" id="bgFile" accept="image/*">
+          <button id="bgClear" style="display:none; cursor:pointer; padding:10px 14px; border-radius:10px; background:#3a1a2a; color:#ff9db5; border:1px solid #5a2a3e; font-size:13px; font-weight:600;">Xoá</button>
+        </div>
+
+        <label>Tên hiển thị</label>
+        <input type="text" id="fName" placeholder="vd: Phùng Gia Huy" value="Tên của bạn">
+
+        <label>Vai trò / nghề</label>
+        <input type="text" id="fRole" placeholder="vd: Content Creator · Editor" value="Content Creator">
+
+        <label>Giới thiệu ngắn</label>
+        <textarea id="fBio" placeholder="Vài dòng về bạn...">Chia sẻ về hành trình học edit và sáng tạo nội dung 🎬</textarea>
+
+        <label>Các liên kết (để trống nếu không dùng)</label>
+        <div class="row2">
+          <input type="text" id="fL1" placeholder="Nút 1 (vd: TikTok)" value="TikTok">
+          <input type="text" id="fL2" placeholder="Nút 2 (vd: Facebook)" value="Facebook">
+        </div>
+        <div class="row2" style="margin-top:10px;">
+          <input type="text" id="fL3" placeholder="Nút 3 (vd: Liên hệ)" value="Liên hệ Zalo">
+          <input type="text" id="fL4" placeholder="Nút 4 (vd: Cửa hàng)" value="">
+        </div>
+
+        <button class="dl" id="dlBtn">⬇ Tải Profile (ảnh PNG)</button>
+      </div>
+
+      <div class="panel" style="margin-top:18px;">
+        <h2><span class="n">3.</span> Thanh toán</h2>
+        <div class="pay-row">
+          <div>
+            <div class="pay-name" id="payName">Mẫu Neon</div>
+            <div class="pay-sub">Thanh toán qua chuyển khoản · TPBank</div>
+          </div>
+          <div class="pay-price" id="payPrice">39.000₫</div>
+        </div>
+        <button class="paybtn" id="payBtn">💳 Thanh toán ngay</button>
+      </div>
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="preview-wrap">
+      <div class="preview-lab">Xem trước</div>
+      <div id="card" data-tpl="neon">
+        <div class="cover"><span class="fx" aria-hidden="true"></span></div>
+        <div class="avatar"><div class="ph">👤</div></div>
+        <div class="name" id="cardName">Tên của bạn</div>
+        <div class="role" id="cardRole">Content Creator</div>
+        <div class="bio" id="cardBio"></div>
+        <div class="links" id="cardLinks"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var TPLS = [
+    {id:"neon",   name:"Neon",     bg:"#120a22", ava:"#ff5fa8", l:"#5fe8ff", price:39000},
+    {id:"clean",  name:"Tối giản", bg:"#ffffff", ava:"#2d6cdf", l:"#cfe0ff", price:19000},
+    {id:"sunset", name:"Hoàng hôn",bg:"#2a1430", ava:"#ff6f91", l:"#ffb347", price:29000},
+    {id:"glass",  name:"Kính mờ",  bg:"#1b2433", ava:"#a78bfa", l:"#5eead4", price:35000},
+    {id:"luxury", name:"Sang trọng",bg:"#0c0c0c",ava:"#e9c46a", l:"#c9962f", price:49000},
+    {id:"pastel", name:"Pastel",   bg:"#fff0f5", ava:"#ff8fb1", l:"#b5a7ff", price:25000},
+    {id:"cyber",  name:"Cyber",    bg:"#05080f", ava:"#14ff72", l:"#00e5ff", price:39000},
+    {id:"nature", name:"Thiên nhiên",bg:"#f3efe4",ava:"#7c8a5a",l:"#b7a06a", price:29000},
+    {id:"vapor",  name:"Vaporwave",bg:"#241a44", ava:"#ff6ec7", l:"#7efff5", price:35000},
+    {id:"corp",   name:"Chuyên nghiệp",bg:"#0f1b2d",ava:"#3b82f6",l:"#60a5fa", price:45000}
+  ];
+
+  // Thông tin nhận tiền (TPBank)
+  var BANK = { bin:"970423", acc:"42051799999", name:"PHUNG GIA HUY", label:"TPBank" };
+  var fmt = new Intl.NumberFormat('vi-VN');
+  var current = TPLS[0];
+
+  var card=document.getElementById('card');
+  var tplsBox=document.getElementById('tpls');
+
+  TPLS.forEach(function(t){
+    var d=document.createElement('div'); d.className='tpl'+(t.id==='neon'?' on':''); d.dataset.id=t.id;
+    d.innerHTML='<div class="mini" style="background:'+t.bg+'">'
+      +'<div class="ava" style="background:'+t.ava+'"></div>'
+      +'<div class="l1" style="background:'+t.ava+'"></div>'
+      +'<div class="l2" style="background:'+t.l+'"></div></div>'
+      +'<div class="tag">'+t.name+'<br><b style="color:#ffd36b">'+fmt.format(t.price)+'₫</b></div>';
+    d.onclick=function(){
+      tplsBox.querySelectorAll('.tpl').forEach(function(x){x.classList.remove('on');});
+      d.classList.add('on'); card.dataset.tpl=t.id; current=t; updatePayInfo();
+    };
+    tplsBox.appendChild(d);
+  });
+
+  function updatePayInfo(){
+    document.getElementById('payName').textContent='Mẫu '+current.name;
+    document.getElementById('payPrice').textContent=fmt.format(current.price)+'₫';
+  }
+  updatePayInfo();
+
+  // photo upload
+  var avatarBox=card.querySelector('.avatar');
+  var avaPv=document.getElementById('avaPv');
+  document.getElementById('avaFile').addEventListener('change', function(e){
+    var f=e.target.files[0]; if(!f) return;
+    var rd=new FileReader();
+    rd.onload=function(){
+      avatarBox.innerHTML='<img src="'+rd.result+'" alt="avatar">';
+      avaPv.style.backgroundImage='url('+rd.result+')';
+    };
+    rd.readAsDataURL(f);
+  });
+
+  // background upload (mẫu Tối giản)
+  var bgPv=document.getElementById('bgPv'), bgClear=document.getElementById('bgClear');
+  document.getElementById('bgFile').addEventListener('change', function(e){
+    var f=e.target.files[0]; if(!f) return;
+    var rd=new FileReader();
+    rd.onload=function(){
+      card.style.setProperty('--userbg','url('+rd.result+')');
+      card.classList.add('has-bg');
+      bgPv.style.backgroundImage='url('+rd.result+')';
+      bgClear.style.display='inline-block';
+      if(current.id!=='clean'){
+        var cl=document.querySelector('.tpl[data-id="clean"]'); if(cl) cl.click();
+      }
+    };
+    rd.readAsDataURL(f);
+  });
+  bgClear.addEventListener('click', function(){
+    card.classList.remove('has-bg'); card.style.removeProperty('--userbg');
+    bgPv.style.backgroundImage=''; bgClear.style.display='none';
+    document.getElementById('bgFile').value='';
+  });
+  document.getElementById('fName').oninput=function(){ document.getElementById('cardName').textContent=this.value||'Tên của bạn'; };
+  document.getElementById('fRole').oninput=function(){ document.getElementById('cardRole').textContent=this.value||''; };
+  document.getElementById('fBio').oninput=renderBio;
+  ['fL1','fL2','fL3','fL4'].forEach(function(id){ document.getElementById(id).oninput=renderLinks; });
+
+  function renderBio(){ document.getElementById('cardBio').textContent=document.getElementById('fBio').value||''; }
+  function renderLinks(){
+    var box=document.getElementById('cardLinks'); box.innerHTML='';
+    ['fL1','fL2','fL3','fL4'].forEach(function(id){
+      var v=document.getElementById(id).value.trim();
+      if(v){ var a=document.createElement('a'); a.textContent=v; a.href='#'; box.appendChild(a); }
+    });
+  }
+  // init
+  document.getElementById('cardName').textContent=document.getElementById('fName').value;
+  document.getElementById('cardRole').textContent=document.getElementById('fRole').value;
+  renderBio(); renderLinks();
+
+  // download as PNG
+  document.getElementById('dlBtn').addEventListener('click', function(){
+    var btn=this; var old=btn.textContent; btn.textContent='⏳ Đang tạo ảnh...';
+    html2canvas(card, {backgroundColor:null, scale:3, useCORS:true}).then(function(canvas){
+      var a=document.createElement('a');
+      a.href=canvas.toDataURL('image/png');
+      var nm=(document.getElementById('fName').value||'profile').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').toLowerCase();
+      a.download=nm+'-profile.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      btn.textContent=old;
+    }).catch(function(){ btn.textContent=old; alert('Tạo ảnh lỗi, thử lại nhé!'); });
+  });
+  // ====== PAYMENT ======
+  var payModal=document.getElementById('payModal');
+  function openPay(){
+    var amount=current.price;
+    var info="PROFILE "+current.id.toUpperCase();
+    document.getElementById('pmItem').textContent='Mẫu '+current.name+' · '+fmt.format(amount)+'₫';
+    document.getElementById('pmAmt').textContent=fmt.format(amount)+'₫';
+    document.getElementById('pmInfo').innerHTML=info+' <button class="cp" id="cpInfo">Sao chép</button>';
+    // VietQR (miễn phí, không cần key) — đã điền sẵn số tiền + nội dung
+    var qr="https://img.vietqr.io/image/"+BANK.bin+"-"+BANK.acc+"-compact2.png"
+      +"?amount="+amount+"&addInfo="+encodeURIComponent(info)+"&accountName="+encodeURIComponent(BANK.name);
+    document.getElementById('pmQr').src=qr;
+    document.getElementById('payThanks').classList.remove('show');
+    payModal.classList.add('open'); document.body.style.overflow='hidden';
+    document.getElementById('cpInfo').onclick=function(){ copy(info, this); };
+  }
+  function closePay(){ payModal.classList.remove('open'); document.body.style.overflow=''; }
+  function copy(text, btn){
+    navigator.clipboard && navigator.clipboard.writeText(text).then(function(){
+      var o=btn.textContent; btn.textContent='Đã chép ✓'; setTimeout(function(){ btn.textContent=o; },1500);
+    });
+  }
+  document.getElementById('payBtn').onclick=openPay;
+  document.getElementById('payClose').onclick=closePay;
+  payModal.addEventListener('click', function(e){ if(e.target===payModal) closePay(); });
+  document.querySelectorAll('.cp[data-copy]').forEach(function(b){ b.onclick=function(){ copy(b.dataset.copy, b); }; });
+  document.getElementById('payDone').onclick=function(){ document.getElementById('payThanks').classList.add('show'); };
+})();
+</script>
+<!-- PAYMENT MODAL -->
+<div class="pm" id="payModal">
+  <div class="pm-box">
+    <button class="pm-x" id="payClose">✕</button>
+    <div class="pm-head">Quét mã để thanh toán</div>
+    <div class="pm-sub" id="pmItem">Mẫu Neon · 39.000₫</div>
+    <div class="pm-qr"><img id="pmQr" alt="Mã QR thanh toán"></div>
+    <div class="pm-info">
+      <div class="pm-line"><span>Ngân hàng</span><b>TPBank</b></div>
+      <div class="pm-line"><span>Số tài khoản</span><b id="pmAcc">42051799999 <button class="cp" data-copy="42051799999">Sao chép</button></b></div>
+      <div class="pm-line"><span>Chủ tài khoản</span><b>PHUNG GIA HUY</b></div>
+      <div class="pm-line"><span>Số tiền</span><b id="pmAmt">39.000₫</b></div>
+      <div class="pm-line"><span>Nội dung</span><b id="pmInfo">PROFILE NEON <button class="cp" id="cpInfo">Sao chép</button></b></div>
+    </div>
+    <div class="pm-note">Mở app ngân hàng, quét mã QR (đã điền sẵn số tiền + nội dung), rồi bấm nút dưới đây.</div>
+    <button class="pm-done" id="payDone">✓ Tôi đã chuyển khoản</button>
+    <div class="pm-thanks" id="payThanks">🎉 Cảm ơn bạn! Đơn của bạn đã được ghi nhận. Mình sẽ kiểm tra và gửi profile cho bạn sớm nhất nhé. Liên hệ Zalo nếu cần gấp.</div>
+  </div>
+</div>
+
+</body></html>
