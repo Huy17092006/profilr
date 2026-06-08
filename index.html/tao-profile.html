@@ -88,6 +88,9 @@
     text-transform:uppercase; letter-spacing:1.4px; color:var(--accent); text-align:center;
     background:var(--rolebg); border:1px solid var(--rolebd);}
   #card .bio{text-align:center; font-size:13.5px; color:var(--muted); line-height:1.65; margin:0 26px 20px;}
+  #card .gallery{display:flex; gap:7px; justify-content:center; flex-wrap:wrap; margin:0 24px 18px;}
+  #card .gallery:empty{display:none; margin:0;}
+  #card .gallery img{width:62px; height:62px; object-fit:cover; border-radius:12px; border:1px solid var(--btnbd);}
   #card .links{display:flex; flex-direction:column; gap:10px; margin:0 24px;}
   #card .links a{position:relative; display:flex; align-items:center; justify-content:center; text-decoration:none; padding:13px 16px;
     border-radius:14px; font-weight:600; font-size:14px; color:var(--text); background:var(--btn); border:1px solid var(--btnbd); transition:.25s;}
@@ -244,6 +247,15 @@
   #card[data-tpl="clean"].has-bg .cover .fx{display:none;}
   #card[data-tpl="clean"].has-bg .cover::after{background:linear-gradient(transparent 52%, #ffffff);}
 
+  /* ====== CHẾ ĐỘ XEM LINK PROFILE ====== */
+  body.view-mode{display:flex; align-items:flex-start; justify-content:center;}
+  body.view-mode .wrap > header, body.view-mode .hero, body.view-mode .preview-lab, body.view-mode #builderCol{display:none !important;}
+  body.view-mode .layout{display:block; padding:50px 0 30px;}
+  body.view-mode .preview-wrap{position:static; top:auto;}
+  .vm-foot{display:none; text-align:center; margin:26px 0 50px;}
+  .vm-foot a{color:#ff8ac4; text-decoration:none; border:1px solid #2a2440; padding:11px 22px; border-radius:30px; font-weight:600; font-size:14px;}
+  body.view-mode .vm-foot{display:block;}
+
   /* ====== PAYMENT ====== */
   .pay-row{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px;
     background:#0e0b1c; border:1px solid #2c2350; border-radius:12px; padding:14px 16px;}
@@ -294,7 +306,7 @@
 
   <div class="layout">
     <!-- CONTROLS -->
-    <div>
+    <div id="builderCol">
       <div class="panel">
         <h2><span class="n">1.</span> Chọn mẫu profile</h2>
         <div class="tpls" id="tpls"></div>
@@ -316,6 +328,13 @@
           <label class="btn" for="bgFile">🖼️ Tải ảnh nền</label>
           <input type="file" id="bgFile" accept="image/*">
           <button id="bgClear" style="display:none; cursor:pointer; padding:10px 14px; border-radius:10px; background:#3a1a2a; color:#ff9db5; border:1px solid #5a2a3e; font-size:13px; font-weight:600;">Xoá</button>
+        </div>
+
+        <label>Ảnh nổi bật <span style="opacity:.7">(tối đa 4 ảnh)</span></label>
+        <div class="uploader" style="flex-wrap:wrap; align-items:flex-start;">
+          <label class="btn" for="galFile">🖼️ Thêm ảnh</label>
+          <input type="file" id="galFile" accept="image/*" multiple>
+          <div id="galPv" style="display:flex; gap:7px; flex-wrap:wrap;"></div>
         </div>
 
         <label>Tên hiển thị</label>
@@ -362,8 +381,10 @@
         <div class="name" id="cardName">Tên của bạn</div>
         <div class="role" id="cardRole">Content Creator</div>
         <div class="bio" id="cardBio"></div>
+        <div class="gallery" id="cardGallery"></div>
         <div class="links" id="cardLinks"></div>
       </div>
+      <div class="vm-foot"><a href="#" id="vmNew">✦ Tự tạo Profile của bạn</a></div>
     </div>
   </div>
 </div>
@@ -412,12 +433,14 @@
   updatePayInfo();
 
   // photo upload
+  var avatarData=null, bgData=null, galleryData=[];
   var avatarBox=card.querySelector('.avatar');
   var avaPv=document.getElementById('avaPv');
   document.getElementById('avaFile').addEventListener('change', function(e){
     var f=e.target.files[0]; if(!f) return;
     var rd=new FileReader();
     rd.onload=function(){
+      avatarData=rd.result;
       avatarBox.innerHTML='<img src="'+rd.result+'" alt="avatar">';
       avaPv.style.backgroundImage='url('+rd.result+')';
     };
@@ -430,6 +453,7 @@
     var f=e.target.files[0]; if(!f) return;
     var rd=new FileReader();
     rd.onload=function(){
+      bgData=rd.result;
       card.style.setProperty('--userbg','url('+rd.result+')');
       card.classList.add('has-bg');
       bgPv.style.backgroundImage='url('+rd.result+')';
@@ -441,10 +465,39 @@
     rd.readAsDataURL(f);
   });
   bgClear.addEventListener('click', function(){
+    bgData=null;
     card.classList.remove('has-bg'); card.style.removeProperty('--userbg');
     bgPv.style.backgroundImage=''; bgClear.style.display='none';
     document.getElementById('bgFile').value='';
   });
+
+  // gallery (ảnh nổi bật, tối đa 4)
+  var galPv=document.getElementById('galPv');
+  document.getElementById('galFile').addEventListener('change', function(e){
+    var files=Array.prototype.slice.call(e.target.files);
+    files.forEach(function(f){
+      if(galleryData.length>=4) return;
+      var rd=new FileReader();
+      rd.onload=function(){ galleryData.push(rd.result); renderGallery(); };
+      rd.readAsDataURL(f);
+    });
+    this.value='';
+  });
+  function renderGallery(){
+    // dải ảnh trong thẻ profile
+    var box=document.getElementById('cardGallery'); box.innerHTML='';
+    galleryData.forEach(function(src){ var im=document.createElement('img'); im.src=src; box.appendChild(im); });
+    // ô xem trước + nút xoá trong form
+    galPv.innerHTML='';
+    galleryData.forEach(function(src,i){
+      var w=document.createElement('div'); w.style.cssText='position:relative;';
+      w.innerHTML='<div style="width:46px;height:46px;border-radius:9px;background:#0e0b1c center/cover no-repeat;border:1px solid #2c2350;background-image:url('+src+')"></div>'
+        +'<button data-i="'+i+'" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;border:none;background:#ff5fa8;color:#fff;font-size:11px;line-height:1;cursor:pointer;">✕</button>';
+      w.querySelector('button').onclick=function(){ galleryData.splice(+this.dataset.i,1); renderGallery(); };
+      galPv.appendChild(w);
+    });
+    document.getElementById('galFile').parentNode.querySelector('label.btn').style.opacity = galleryData.length>=4 ? '.5' : '1';
+  }
   document.getElementById('fName').oninput=function(){ document.getElementById('cardName').textContent=this.value||'Tên của bạn'; };
   document.getElementById('fRole').oninput=function(){ document.getElementById('cardRole').textContent=this.value||''; };
   document.getElementById('fBio').oninput=renderBio;
@@ -501,7 +554,88 @@
   document.getElementById('payClose').onclick=closePay;
   payModal.addEventListener('click', function(e){ if(e.target===payModal) closePay(); });
   document.querySelectorAll('.cp[data-copy]').forEach(function(b){ b.onclick=function(){ copy(b.dataset.copy, b); }; });
-  document.getElementById('payDone').onclick=function(){ document.getElementById('payThanks').classList.add('show'); };
+
+  // ====== TẠO LINK PROFILE (nhúng dữ liệu vào URL, không cần máy chủ) ======
+  function shrink(dataUrl, max, cb){
+    if(!dataUrl){ cb(null); return; }
+    var img=new Image();
+    img.onload=function(){
+      var s=Math.min(1, max/Math.max(img.width,img.height));
+      var w=Math.max(1,Math.round(img.width*s)), h=Math.max(1,Math.round(img.height*s));
+      var c=document.createElement('canvas'); c.width=w; c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      try{ cb(c.toDataURL('image/jpeg',0.72)); }catch(e){ cb(dataUrl); }
+    };
+    img.onerror=function(){ cb(null); };
+    img.src=dataUrl;
+  }
+  function collect(){
+    return {
+      t: current.id,
+      n: document.getElementById('fName').value,
+      r: document.getElementById('fRole').value,
+      b: document.getElementById('fBio').value,
+      l: ['fL1','fL2','fL3','fL4'].map(function(id){return document.getElementById(id).value.trim();}).filter(Boolean)
+    };
+  }
+  function shrinkAll(arr, max, cb){
+    if(!arr || !arr.length){ cb([]); return; }
+    var out=[], n=arr.length, done=0;
+    arr.forEach(function(d,i){ shrink(d, max, function(r){ out[i]=r; done++; if(done===n) cb(out.filter(Boolean)); }); });
+  }
+  function genLink(cb){
+    var d=collect();
+    shrink(avatarData, 300, function(av){
+      d.a=av;
+      var needBg = (current.id==='clean' && bgData);
+      shrink(needBg?bgData:null, 560, function(bg){
+        if(bg) d.g=bg;
+        shrinkAll(galleryData, 200, function(imgs){
+          if(imgs.length) d.i=imgs;
+          var json=JSON.stringify(d);
+          cb(location.origin+location.pathname+'#p='+encodeURIComponent(json));
+        });
+      });
+    });
+  }
+
+  document.getElementById('payDone').onclick=function(){
+    var t=document.getElementById('payThanks');
+    t.classList.add('show');
+    var inp=document.getElementById('linkInput');
+    inp.value='Đang tạo link...';
+    genLink(function(url){
+      inp.value=url;
+      document.getElementById('linkCopy').onclick=function(){ copy(url, this); };
+      document.getElementById('linkOpen').onclick=function(){ window.open(url,'_blank'); };
+    });
+  };
+
+  // ====== CHẾ ĐỘ XEM (mở link profile) ======
+  function applyData(d){
+    card.dataset.tpl=d.t||'neon';
+    document.getElementById('cardName').textContent=d.n||'';
+    document.getElementById('cardRole').textContent=d.r||'';
+    document.getElementById('cardBio').textContent=d.b||'';
+    var box=document.getElementById('cardLinks'); box.innerHTML='';
+    (d.l||[]).forEach(function(v){ var a=document.createElement('a'); a.textContent=v; a.href='#'; box.appendChild(a); });
+    if(d.a){ avatarBox.innerHTML='<img src="'+d.a+'" alt="avatar">'; }
+    if(d.g && d.t==='clean'){ card.style.setProperty('--userbg','url('+d.g+')'); card.classList.add('has-bg'); }
+    var gbox=document.getElementById('cardGallery'); gbox.innerHTML='';
+    (d.i||[]).forEach(function(src){ var im=document.createElement('img'); im.src=src; gbox.appendChild(im); });
+  }
+  function checkView(){
+    var h=location.hash||'';
+    if(h.indexOf('#p=')===0){
+      try{
+        var d=JSON.parse(decodeURIComponent(h.slice(3)));
+        applyData(d);
+        document.body.classList.add('view-mode');
+      }catch(e){}
+    }
+  }
+  document.getElementById('vmNew').onclick=function(e){ e.preventDefault(); location.href=location.pathname; };
+  checkView();
 })();
 </script>
 <!-- PAYMENT MODAL -->
@@ -520,7 +654,14 @@
     </div>
     <div class="pm-note">Mở app ngân hàng, quét mã QR (đã điền sẵn số tiền + nội dung), rồi bấm nút dưới đây.</div>
     <button class="pm-done" id="payDone">✓ Tôi đã chuyển khoản</button>
-    <div class="pm-thanks" id="payThanks">🎉 Cảm ơn bạn! Đơn của bạn đã được ghi nhận. Mình sẽ kiểm tra và gửi profile cho bạn sớm nhất nhé. Liên hệ Zalo nếu cần gấp.</div>
+    <div class="pm-thanks" id="payThanks">🎉 Cảm ơn bạn! Đơn đã được ghi nhận. Đây là <b>link profile</b> của bạn — lưu lại hoặc chia sẻ nhé:
+      <input id="linkInput" readonly style="width:100%; margin-top:10px; padding:10px; border-radius:8px; border:1px solid #2c2350; background:#0e0b1c; color:#9fe6ff; font-size:11.5px;">
+      <div style="display:flex; gap:8px; margin-top:8px;">
+        <button id="linkCopy" class="pm-done" style="background:linear-gradient(120deg,#5fe8ff,#7c9bff);">📋 Sao chép link</button>
+        <button id="linkOpen" class="pm-done" style="background:linear-gradient(120deg,#7cff8f,#5fe8ff);">↗ Mở thử</button>
+      </div>
+      <div style="font-size:11.5px; color:#8a96c0; margin-top:10px; line-height:1.5;">Lưu ý: chủ shop vẫn cần kiểm tra app ngân hàng để đối soát tiền. Link đã chứa sẵn profile của bạn (không cần lưu máy chủ).</div>
+    </div>
   </div>
 </div>
 
