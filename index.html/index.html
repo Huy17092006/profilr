@@ -7,6 +7,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800;900&family=Marcellus&family=Marcellus+SC&display=swap" rel="stylesheet">
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#160d29">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tạp Hóa">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
   :root{
     --violet:#4a3a78;
@@ -389,6 +397,12 @@
     font-size:13px; text-transform:uppercase; color:#0c1f2a; font-weight:700;
     background:linear-gradient(120deg,#5fe8ff,#7c9bff); padding:14px 40px; border-radius:40px; transition:.35s;}
   .tpl-card.pink .tpl-go{background:linear-gradient(120deg,#ff5fa8,#ff8a3d); color:#2a0d1c;}
+  .tpl-card.gold{border-color:rgba(255,211,107,.45);
+    box-shadow:0 22px 60px rgba(15,5,30,.5), 0 0 46px rgba(255,211,107,.12);}
+  .tpl-card.gold:hover{box-shadow:0 30px 70px rgba(15,5,30,.55), 0 0 56px rgba(255,211,107,.26);}
+  .tpl-card.gold .kicker{color:#ffd36b;}
+  .tpl-card.gold h4{text-shadow:0 0 26px rgba(255,211,107,.45);}
+  .tpl-card.gold .tpl-go{background:linear-gradient(120deg,#ffd36b,#5fe8ff); color:#2a200d;}
   .tpl-card:hover .tpl-go{letter-spacing:6px;}
 </style>
 </head>
@@ -508,6 +522,14 @@
           <p>Phong cách neon rực rỡ cho game, sự kiện, club và sáng tạo.</p>
           <span class="tpl-go">Xem thư viện →</span>
         </a>
+        <a class="tpl-card gold reveal" href="tao-profile.html" target="_blank" rel="noopener">
+          <div class="ico">🪪</div>
+          <div class="kicker">10 mẫu</div>
+          <h4>Tạo Profile</h4>
+          <div class="tpl-chips"><span>Thêm ảnh</span><span>Tùy chỉnh</span><span>Tải về PNG</span></div>
+          <p>Chọn mẫu, thêm ảnh của bạn, điền thông tin rồi tải profile về dùng ngay.</p>
+          <span class="tpl-go">Tạo ngay →</span>
+        </a>
       </div>
     </div>
   </section>
@@ -619,7 +641,7 @@
 
 </script>
 
-<!-- ====================== AI WIDGET (trả lời nhanh, không cần key) ====================== -->
+<!-- ====================== AI WIDGET (chat miễn phí qua Pollinations, không cần key) ====================== -->
 <style>
   #aiLauncher{position:fixed; right:22px; bottom:22px; z-index:70;
     display:flex; align-items:center; gap:10px; cursor:pointer;
@@ -701,62 +723,20 @@
   var MODES = {
     chat: { label:"Trò chuyện", icon:"💬", ac:"#5fe8ff", glow:"rgba(95,232,255,.6)",
       tagline:"Hỏi mình bất cứ điều gì",
-      intro:"Chào bạn 👋 Mình là trợ lý của TẠP HÓA ONLINE. Hỏi về edit, caption, hay về kênh đều được nha!",
+      intro:"Chào bạn 👋 Mình là trợ lý của TẠP HÓA ONLINE. Hỏi gì cũng được nha!",
+      system:"Bạn là trợ lý AI thân thiện của trang TẠP HÓA ONLINE (kênh chia sẻ về học edit video). Luôn trả lời bằng tiếng Việt tự nhiên, gần gũi, rõ ràng và hữu ích.",
       chips:["Bạn là ai?","Kênh này về gì?","Cho mình một mẹo edit"] },
     edit: { label:"Edit video", icon:"🎬", ac:"#ff5fa8", glow:"rgba(255,95,168,.6)",
       tagline:"Mentor dựng phim của bạn",
       intro:"Mình là mentor edit nè 🎬 Hỏi mình về cắt ghép, chỉnh màu, bắt nhịp nhạc, CapCut...",
+      system:"Bạn là mentor dạy edit video cho kênh TẠP HÓA ONLINE. Tư vấn cụ thể, dễ làm theo cho người mới: cắt ghép, chuyển cảnh, chỉnh màu, bắt nhịp nhạc, âm thanh, hiệu ứng, thao tác CapCut/Premiere. Trả lời bằng tiếng Việt, đưa các bước rõ ràng, ưu tiên cách miễn phí dễ làm.",
       chips:["Cách bắt nhịp nhạc","Chỉnh màu cinematic","Chuyển cảnh mượt"] },
     create: { label:"Sáng tạo", icon:"✨", ac:"#ffd36b", glow:"rgba(255,211,107,.6)",
       tagline:"Ý tưởng · caption · hashtag",
       intro:"Cần ý tưởng, caption hay hashtag? Nói chủ đề ra, mình gợi ý liền ✨",
+      system:"Bạn là chuyên gia sáng tạo nội dung mạng xã hội tiếng Việt (TikTok, Reels, Shorts). Tạo ý tưởng video, kịch bản ngắn, caption bắt trend, tiêu đề giật tít, hashtag. Gọn gàng, dễ copy, hợp xu hướng Việt Nam.",
       chips:["Ý tưởng video edit","Caption thả thính","Hashtag triệu view","10 tiêu đề giật tít"] }
   };
-
-  /* ====== Bộ trả lời nhanh — giỏi cả 3 mảng ====== */
-  var RULES = [
-    { k:["xin chao","chao ban","hello","hi ","alo","chao"], a:"Chào bạn! 👋 Mình là trợ lý của TẠP HÓA ONLINE. Bạn muốn hỏi về edit video, caption/hashtag, hay về kênh nè?" },
-    { k:["ban la ai","gioi thieu ban","ten ban","ban ten gi"], a:"Mình là trợ lý của TẠP HÓA ONLINE 🤖 Mình giúp bạn: mẹo edit video, gợi ý caption–hashtag–tiêu đề, và chỉ đường quanh trang web." },
-    { k:["kenh nay","trang nay ve gi","tap hoa","noi dung kenh","ve gi"], a:"TẠP HÓA ONLINE là nơi mình chia sẻ về học edit video — từ cắt ghép, chỉnh màu, bắt nhịp nhạc tới các hiệu ứng nhỏ giúp video lên tay. Không cần máy khủng hay phần mềm đắt tiền, ai thích là làm được! 🎬" },
-    { k:["lien he","facebook","tiktok","zalo","github","ket noi","theo doi"], a:"Bạn kết nối với mình qua:\n• TikTok: @huy170995\n• Facebook & Zalo: có nút ở phần đầu trang\n• GitHub: Huy17092006\nKéo lên đầu trang bấm vào icon tương ứng nha!" },
-    { k:["game","tro choi","choi game"], a:"Trang có 2 game \"Thế Chiến Ảo\" 🎮: một bản dễ để giải lao, một bản siêu khó cho dân lì đòn. Kéo xuống phần Game để chơi thử nhé!" },
-    { k:["mau web","template","thu vien","mau wed","mau trang"], a:"Mình có sẵn thư viện 20 mẫu web ✨: 10 mẫu Thương Mại và 10 mẫu Neon. Kéo xuống phần \"Thư viện mẫu web\", bấm vào là xem trước và tải riêng từng mẫu được luôn!" },
-    { k:["cach dung web","huong dan","dung trang","di chuyen"], a:"Cách dùng trang rất đơn giản:\n1. Cuộn xuống để xem phần \"Học edit\".\n2. Phần Game để chơi giải trí.\n3. \"Thư viện mẫu web\" để xem/tải mẫu.\n4. Bấm \"Hỏi AI\" (góc dưới phải) bất cứ lúc nào để hỏi mình 😎" },
-
-    { k:["bat nhip","nhip nhac","beat","theo nhac","danh dau nhip"], a:"🎵 Bắt nhịp nhạc trong CapCut:\n1. Thêm nhạc → chạm vào track nhạc.\n2. Bấm \"Đánh dấu nhịp\" (Beat) để CapCut tự chấm điểm theo beat, hoặc gõ tay nút Thêm dấu.\n3. Kéo các điểm cắt cảnh trùng với dấu nhịp.\n4. Mẹo: cắt cảnh đúng ngay phách mạnh (drop) sẽ \"đã\" nhất!" },
-    { k:["chinh mau","mau phim","cinematic","color","mau dep","tong mau","grading"], a:"🎨 Chỉnh màu cinematic nhanh:\n1. Tăng nhẹ Contrast, giảm một chút Highlights, nâng Shadows → ra chất phim.\n2. Giảm Saturation tổng, nhưng tăng riêng tông da/cam.\n3. Thêm chút ám xanh ở vùng tối (teal) + ấm ở vùng sáng (orange) = look \"teal & orange\".\n4. Hoặc dùng LUT có sẵn rồi giảm cường độ ~50%." },
-    { k:["chuyen canh","transition","hieu ung chuyen"], a:"🔄 Chuyển cảnh mượt:\n• Đơn giản, sạch: dùng cắt thẳng (hard cut) đúng nhịp nhạc.\n• Mượt: Zoom in/out hoặc trượt (whip/pan) giữa 2 cảnh.\n• Match-cut: kết thúc cảnh A và mở cảnh B cùng bố cục/chuyển động.\nĐừng lạm dụng quá nhiều hiệu ứng — 1–2 kiểu xuyên suốt là đẹp nhất!" },
-    { k:["cat ghep","cat video","trim","cat canh","ghep video"], a:"✂️ Cắt ghép cơ bản:\n1. Nhập clip → cắt bỏ đoạn thừa, giữ những khoảnh khắc \"đắt\".\n2. Sắp theo mạch: mở đầu hút mắt → nội dung → kết.\n3. Giữ nhịp nhanh, mỗi cảnh đừng quá dài.\n4. Cắt theo nhịp nhạc cho cuốn." },
-    { k:["am thanh","tieng","loc tieng","long nhac","tach nhac","audio","loc on"], a:"🔊 Âm thanh:\n• Giảm tiếng ồn: dùng tính năng Giảm tiếng ồn (Reduce noise) trong CapCut.\n• Trộn nhạc nền nhỏ hơn giọng nói (nhạc ~ -18dB so với thoại).\n• Thêm hiệu ứng tiếng (whoosh, pop) ở các điểm chuyển cảnh cho sinh động." },
-    { k:["chu","caption text","phu de","sub","text","tieu de tren video"], a:"📝 Chữ & phụ đề:\n• CapCut có nút \"Tự động tạo phụ đề\" — nhận tiếng Việt khá ổn.\n• Chọn font dày, rõ; thêm viền/đổ bóng để chữ nổi trên nền.\n• Cho chữ xuất hiện đúng lúc nói, đừng để quá lâu trên màn hình." },
-    { k:["xoa phong","tach nen","chroma","phong xanh","green screen","xoa nen"], a:"🟢 Tách nền/phông xanh:\n1. Quay trên nền xanh lá đều màu, đủ sáng.\n2. CapCut: thêm clip → Cắt ra (Cutout) → Phông nền chroma → chọn màu xanh.\n3. Tinh chỉnh Cường độ & Độ mịn cho viền sạch." },
-    { k:["xuat video","export","chat luong","1080","4k","render","do phan giai"], a:"📤 Xuất video chuẩn:\n• Độ phân giải 1080p (hoặc 4K nếu máy khoẻ), 30 hoặc 60fps.\n• Bitrate để \"Cao\" cho nét.\n• Quay/đăng dọc 9:16 cho TikTok/Reels, ngang 16:9 cho YouTube." },
-    { k:["slow motion","quay cham","60fps","lam muot","toc do","speed"], a:"🐢 Slow-motion mượt:\n• Quay sẵn ở 60fps (hoặc 120fps) rồi mới làm chậm.\n• Trong CapCut chỉnh Tốc độ < 1x; bật \"Làm mượt\" (optical flow) nếu có.\n• Đừng làm chậm clip quay 30fps quá nhiều → sẽ bị giật." },
-    { k:["phan mem","app edit","dung app nao","phan mem nao","app nao"], a:"📱 App edit gợi ý (đa số miễn phí):\n• Điện thoại: CapCut (dễ, mạnh), VN, hoặc InShot.\n• Máy tính: CapCut PC, DaVinci Resolve (free, chuyên), Premiere (trả phí).\nMới bắt đầu thì cứ CapCut là đủ \"chiến\"!" },
-    { k:["moi bat dau","hoc tu dau","newbie","bat dau edit","lo trinh"], a:"🌱 Lộ trình cho người mới:\n1. Tải CapCut, làm quen cắt ghép.\n2. Tập cắt theo nhịp nhạc.\n3. Học chỉnh màu cơ bản.\n4. Thêm chữ/phụ đề.\n5. Làm 1 video hoàn chỉnh ngắn rồi đăng. Cứ làm là lên tay nhanh lắm!" },
-
-    { k:["caption","viet caption","cap","loi tua"], a:"✍️ Mẹo viết caption hút:\n• Câu đầu phải gây tò mò hoặc chạm cảm xúc.\n• Ngắn gọn, có cá tính, thêm 1 emoji hợp vibe.\n• Kết bằng câu hỏi/CTA để người xem bình luận.\nVí dụ: \"Ngồi edit cả đêm chỉ để bạn xem 15 giây 🥹 Bạn thấy đáng không?\"" },
-    { k:["hashtag","tag","the bai"], a:"#️⃣ Bộ hashtag gợi ý:\n#edit #capcut #hoctedit #editvideo #xuhuong #fyp #viral #vietnam\nMẹo: trộn 3 nhóm — hashtag lớn (#fyp), hashtag ngách (#hoctedit), và hashtag riêng của bạn (#taphoaonline)." },
-    { k:["tieu de","title","giat tit","dat ten video"], a:"🏷️ Công thức tiêu đề giật tít:\n• \"Cách [làm X] chỉ trong [thời gian]\"\n• \"Mình đã [kết quả] nhờ [cách] này\"\n• \"Đừng edit nếu chưa biết [mẹo] này\"\n• \"99% người mới sai ở bước [N]\"" },
-    { k:["tha thinh","thinh","caption yeu","crush"], a:"💘 Caption thả thính:\n• \"Anh không giỏi edit, chỉ giỏi để ý em thôi.\"\n• \"Video này nhạt, nhưng vẫn hơn ngày không có em.\"\n• \"Tua đi tua lại, vẫn dừng ở nụ cười của em.\"" },
-    { k:["y tuong","idea","lam video gi","content","quay gi"], a:"💡 Ý tưởng video edit:\n• Before/After một bản edit.\n• \"1 ngày của dân edit\".\n• Hướng dẫn 1 hiệu ứng trong 15 giây.\n• Tổng hợp khoảnh khắc theo 1 bài nhạc hot.\n• Thử thách edit cùng 1 clip nhiều phong cách." },
-    { k:["trend","xu huong","dang hot","viral"], a:"🔥 Bắt trend: mở TikTok phần Khám phá, để ý nhạc/hiệu ứng đang lặp lại nhiều. Làm theo trend nhưng thêm chất riêng (cách cắt, caption) để nổi bật. Đăng sớm khi trend mới lên sẽ dễ viral hơn!" },
-
-    { k:["cam on","thanks","thank you","cam on ban"], a:"Không có gì đâu! 🥰 Cần gì cứ hỏi mình nha. Chúc bạn edit ra video thật chất!" },
-    { k:["tao anh","ve anh","tao hinh","sinh anh","ve hinh"], a:"Mình gợi ý nội dung dạng chữ (ý tưởng, caption, hashtag, kịch bản) chứ chưa vẽ được ảnh nha 🙈 Bạn cần ý tưởng hình ảnh thì mình mô tả concept cho bạn dựng!" }
-  ];
-
-  var FALLBACK = "Câu này hơi ngoài phạm vi của mình rồi 😅 Bạn thử hỏi về edit video, caption/hashtag, hoặc về kênh nha — ví dụ \"cách bắt nhịp nhạc\", \"viết caption sao cho hay\", hay \"kênh này về gì\".";
-
-  function noAccent(s){ return (s||"").normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D'); }
-  function ruleAnswer(q){
-    var t=noAccent(q.toLowerCase()), best=null, score=0;
-    RULES.forEach(function(r){
-      var sc=0; r.k.forEach(function(kw){ if(t.indexOf(noAccent(kw))>-1) sc++; });
-      if(sc>score){ score=sc; best=r; }
-    });
-    return (best && score>0) ? best.a : FALLBACK;
-  }
 
   var mode="chat", hist={chat:[],edit:[],create:[]}, busy=false;
 
@@ -808,13 +788,42 @@
   }
   function refresh(){ buildTabs(); applyAccent(); renderMsgs(); renderChips(); inp.placeholder='Nhắn cho '+M().label.toLowerCase()+'...'; }
 
+  async function askAI(){
+    var msgsArr=[{role:'system', content:M().system}].concat(hist[mode]);
+    // Cách 1: POST OpenAI-compatible của Pollinations (miễn phí, không key)
+    try{
+      var r=await fetch("https://text.pollinations.ai/openai", {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({ model:"openai", messages:msgsArr, referrer:"taphoaonline" })
+      });
+      if(r.ok){
+        var d=await r.json();
+        var t=d && d.choices && d.choices[0] && d.choices[0].message ? d.choices[0].message.content : "";
+        if(t && t.trim()) return t.trim();
+      }
+    }catch(e){}
+    // Cách 2 (dự phòng): GET đơn giản
+    var convo=hist[mode].map(function(m){ return (m.role==='user'?'Người dùng: ':'Trợ lý: ')+m.content; }).join('\n');
+    var prompt=M().system+"\n\n"+convo+"\nTrợ lý:";
+    var u="https://text.pollinations.ai/"+encodeURIComponent(prompt)+"?model=openai&referrer=taphoaonline";
+    var r2=await fetch(u); if(!r2.ok) throw new Error("HTTP "+r2.status);
+    return (await r2.text()).trim();
+  }
+
   function send(text){
     var content=(text!==undefined?text:inp.value).trim();
     if(!content || busy) return;
     inp.value=''; inp.style.height='auto';
     hist[mode].push({role:'user', content:content});
     busy=true; renderMsgs(); renderChips(); updateSend();
-    setTimeout(function(){ busy=false; hist[mode].push({role:'assistant', content:ruleAnswer(content)}); renderMsgs(); updateSend(); }, 350);
+    askAI().then(function(reply){
+      busy=false; hist[mode].push({role:'assistant', content:reply||"Mình chưa nghĩ ra, thử lại nha!"});
+      if(hist[mode].length>16) hist[mode]=hist[mode].slice(-16);
+      renderMsgs(); updateSend();
+    }).catch(function(){
+      busy=false; hist[mode].push({role:'assistant', content:"⚠️ Kết nối tới AI không được lúc này (server miễn phí đôi khi quá tải). Bạn thử lại sau chút nha."});
+      renderMsgs(); updateSend();
+    });
   }
 
   function updateSend(){ sendBtn.disabled = busy || !inp.value.trim(); }
@@ -829,6 +838,34 @@
 </script>
 <!-- ==================== /AI WIDGET ==================== -->
 
+<!-- PWA: đăng ký service worker + nút cài app -->
+<style>
+  #installBtn{position:fixed; left:22px; bottom:22px; z-index:70; display:none;
+    align-items:center; gap:9px; cursor:pointer; font-family:'Marcellus SC',serif; letter-spacing:2px;
+    font-size:12px; text-transform:uppercase; color:#160d29; font-weight:700;
+    padding:13px 22px; border:none; border-radius:40px;
+    background:linear-gradient(120deg,#ffd36b,#5fe8ff); box-shadow:0 10px 30px rgba(95,232,255,.4);}
+  #installBtn.show{display:flex}
+</style>
+<button id="installBtn">⤓ Cài ứng dụng</button>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('sw.js').catch(function(e){ console.warn('SW lỗi:', e); });
+    });
+  }
+  var deferredPrompt = null;
+  var installBtn = document.getElementById('installBtn');
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault(); deferredPrompt = e; installBtn.classList.add('show');
+  });
+  installBtn.addEventListener('click', function(){
+    if(!deferredPrompt) return;
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.finally(function(){ deferredPrompt = null; installBtn.classList.remove('show'); });
+  });
+  window.addEventListener('appinstalled', function(){ installBtn.classList.remove('show'); });
+</script>
+
 </body>
 </html>
-
