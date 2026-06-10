@@ -37,6 +37,25 @@
     color:var(--paper);
     background:var(--night);
     overflow-x:hidden;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; text-rendering:optimizeLegibility;
+  }
+
+  /* ====== UX POLISH ====== */
+  ::selection{background:rgba(255,126,182,.32); color:#fff;}
+  a, button{transition:transform .32s cubic-bezier(.2,.7,.2,1), box-shadow .32s ease, background-color .3s ease, color .3s ease, border-color .3s ease, opacity .3s ease, letter-spacing .35s ease;}
+  a:active, button:active{transform:translateY(1px) scale(.985);}
+  :focus-visible{outline:2px solid #7cd8ff; outline-offset:3px; border-radius:8px;}
+  *{scrollbar-width:thin; scrollbar-color:rgba(160,150,210,.5) transparent;}
+  ::-webkit-scrollbar{width:10px; height:10px;}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#7c6bff,#ff7eb6); border-radius:10px; border:2px solid transparent; background-clip:padding-box;}
+  ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#9384ff,#ff96c5); background-clip:padding-box;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  .reveal{will-change:opacity, transform;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important;}
+    .reveal{opacity:1 !important; transform:none !important;}
+    .ships,.floaties,.meteors{display:none !important;}
   }
 
   /* ====== ATMOSPHERE: long vertical sky→city→night gradient ====== */
