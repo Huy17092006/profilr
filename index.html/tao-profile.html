@@ -4,293 +4,98 @@
 <title>Tạo Profile — TẠP HÓA ONLINE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;500;600;700&family=Marcellus&family=Orbitron:wght@600;800&family=Pacifico&family=Playfair+Display:wght@600;800&family=Poppins:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Inter',system-ui,sans-serif; background:#0f0b18; color:#ece9f5; min-height:100vh;}
-  body::before{content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background:radial-gradient(circle at 85% -5%, rgba(255,95,168,.12), transparent 45%),
-               radial-gradient(circle at 5% 105%, rgba(95,232,255,.10), transparent 45%);}
-  .wrap{max-width:1120px; margin:0 auto; padding:0 22px; position:relative; z-index:1;}
+  body{font-family:'Poppins',system-ui,sans-serif; background:#13111c; color:#ece9f5; min-height:100vh;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 20px; position:relative;}
+  header{display:flex; align-items:center; justify-content:space-between; padding:18px 0;}
+  .logo{font-weight:800; font-size:19px; letter-spacing:.3px;}
+  .logo span{color:#fd8170;}
+  .back{color:#aaa3bd; text-decoration:none; font-size:14px; font-weight:500; border:1px solid #2c2640; padding:8px 16px; border-radius:30px; background:#1b1828;}
+  .back:hover{color:#fff; border-color:#fd8170;}
+  .hero-h{text-align:center; padding:18px 0 6px;}
+  .hero-h h1{font-size:clamp(24px,5vw,34px); font-weight:800;}
+  .hero-h h1 span{color:#fd8170;}
+  .hero-h p{color:#aaa3bd; font-size:14.5px; margin-top:8px;}
 
-  header{display:flex; align-items:center; justify-content:space-between; padding:20px 0;}
-  .logo{font-family:'Cinzel',serif; font-weight:800; font-size:20px; letter-spacing:1px;}
-  .logo span{background:linear-gradient(120deg,#ff5fa8,#5fe8ff); -webkit-background-clip:text; background-clip:text; color:transparent;}
-  .back{color:#9b94b3; text-decoration:none; font-size:14px; font-weight:500; border:1px solid #2a2440;
-    padding:8px 16px; border-radius:30px; background:#171228; transition:.2s;}
-  .back:hover{color:#fff; border-color:#ff5fa8;}
+  .layout{display:grid; grid-template-columns:1fr 392px; gap:26px; padding:14px 0 70px; align-items:start;}
+  @media(max-width:860px){ .layout{grid-template-columns:1fr;} .preview-wrap{order:-1;} }
 
-  .hero{text-align:center; padding:24px 0 18px;}
-  .hero h1{font-family:'Cinzel',serif; font-weight:800; font-size:clamp(26px,5vw,40px); line-height:1.1;}
-  .hero h1 span{background:linear-gradient(120deg,#ff5fa8,#5fe8ff); -webkit-background-clip:text; background-clip:text; color:transparent;}
-  .hero p{color:#9b94b3; font-size:15px; margin-top:10px;}
-
-  .layout{display:grid; grid-template-columns:1fr 380px; gap:26px; padding:14px 0 70px; align-items:start;}
-  @media(max-width:880px){ .layout{grid-template-columns:1fr;} .preview-wrap{position:static !important; order:-1;} }
-
-  .panel{background:#15102a; border:1px solid #261d44; border-radius:18px; padding:22px;}
-  .panel h2{font-size:15px; font-weight:700; margin-bottom:14px; letter-spacing:.3px;}
-  .panel h2 .n{color:#ff8ac4;}
-
-  .tpls{display:grid; grid-template-columns:repeat(5,1fr); gap:9px; margin-bottom:8px;}
-  @media(max-width:560px){ .tpls{grid-template-columns:repeat(4,1fr);} }
-  .tpl{cursor:pointer; border-radius:11px; overflow:hidden; border:2px solid transparent; aspect-ratio:3/4;
-    position:relative; transition:.2s; background:#0c0a14;}
-  .tpl.on{border-color:#ff5fa8; box-shadow:0 0 0 3px rgba(255,95,168,.25);}
-  .tpl .mini{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:6px;}
-  .tpl .ava{width:34%; aspect-ratio:1; border-radius:50%;}
-  .tpl .l1{width:54%; height:6px; border-radius:4px;}
-  .tpl .l2{width:38%; height:5px; border-radius:4px; opacity:.7;}
-  .tpl .tag{position:absolute; bottom:5px; left:0; right:0; text-align:center; font-size:8.5px; color:#fff; font-weight:600; text-shadow:0 1px 3px #000;}
-
-  label{display:block; font-size:12px; color:#b7afd0; font-weight:600; margin:14px 0 5px; letter-spacing:.3px;}
-  input[type=text], textarea{width:100%; padding:11px 13px; border-radius:10px; border:1px solid #2c2350;
-    background:#0e0b1c; color:#fff; font-family:'Inter'; font-size:14px; outline:none; transition:.2s;}
-  input:focus, textarea:focus{border-color:#5fe8ff; box-shadow:0 0 0 3px rgba(95,232,255,.14);}
-  textarea{resize:vertical; min-height:60px;}
+  .panel{background:#1b1828; border:1px solid #2a2440; border-radius:16px; padding:20px; margin-bottom:16px;}
+  .panel h2{font-size:14px; font-weight:700; margin-bottom:14px;}
+  .panel h2 .n{color:#fd8170;}
+  label{display:block; font-size:12px; color:#b7afd0; font-weight:600; margin:13px 0 5px;}
+  input[type=text], input[type=url], select{width:100%; padding:11px 12px; border-radius:10px; border:1px solid #2c2350;
+    background:#100d1c; color:#fff; font-family:'Poppins'; font-size:14px; outline:none;}
+  input:focus, select:focus{border-color:#fd8170; box-shadow:0 0 0 3px rgba(253,129,112,.16);}
   .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
-  .uploader{display:flex; align-items:center; gap:12px; margin-top:5px;}
-  .uploader .pv{width:56px; height:56px; border-radius:50%; background:#0e0b1c center/cover no-repeat; border:1px solid #2c2350; flex:0 0 auto;}
-  .uploader label.btn{display:inline-block; cursor:pointer; margin:0; padding:10px 16px; border-radius:10px;
-    background:#241a44; color:#cfc7ec; border:1px solid #3a2d63; font-size:13px; font-weight:600;}
-  .uploader input{display:none;}
-
-  .dl{margin-top:20px; width:100%; padding:14px; border:none; border-radius:12px; cursor:pointer;
-    font-family:'Inter'; font-weight:700; font-size:15px; color:#0f0b18;
-    background:linear-gradient(120deg,#ff5fa8,#5fe8ff); box-shadow:0 8px 24px rgba(255,95,168,.32); transition:.2s;}
+  .uploader{display:flex; align-items:center; gap:11px; flex-wrap:wrap;}
+  .uploader .pv{width:50px; height:50px; border-radius:10px; background:#100d1c center/cover no-repeat; border:1px solid #2c2350; flex:0 0 auto;}
+  .uploader label.btn{display:inline-block; cursor:pointer; margin:0; padding:10px 15px; border-radius:10px; background:#2a1f44; color:#cfc7ec; border:1px solid #3a2d63; font-size:13px; font-weight:600;}
+  .uploader input[type=file]{display:none;}
+  .swatches{display:flex; gap:8px; flex-wrap:wrap;}
+  .sw{width:30px; height:30px; border-radius:50%; cursor:pointer; border:2px solid transparent;}
+  .sw.on{border-color:#fff; box-shadow:0 0 0 2px #1b1828, 0 0 0 4px #fd8170;}
+  .dl{width:100%; margin-top:8px; padding:13px; border:none; border-radius:12px; cursor:pointer; font-family:'Poppins'; font-weight:700; font-size:14.5px; color:#3a1208; background:linear-gradient(120deg,#ffd0a8,#fd8170); transition:.2s;}
+  .dl.alt{color:#fff; background:#2a1f44; border:1px solid #3a2d63;}
   .dl:hover{transform:translateY(-2px);}
+  .pricetag{text-align:center; font-size:13px; color:#b7afd0; margin-bottom:8px;}
+  .pricetag b{color:#ffd36b; font-size:18px;}
 
-  .preview-wrap{position:sticky; top:20px;}
-  .preview-lab{font-size:12px; color:#9b94b3; text-transform:uppercase; letter-spacing:2px; text-align:center; margin-bottom:12px;}
+  .preview-wrap{position:sticky; top:18px;}
+  .preview-lab{font-size:11px; color:#aaa3bd; text-transform:uppercase; letter-spacing:2px; text-align:center; margin-bottom:10px;}
+  .phone{max-width:380px; margin:0 auto; border-radius:30px; overflow:hidden; box-shadow:0 30px 70px rgba(0,0,0,.5); border:1px solid #2a2440;}
 
-  /* ====== BASE CARD (thiết kế lại — phong cách thẻ hồ sơ hiện đại) ====== */
-  #card{--bg:#15102a; --bg2:#1d1538; --text:#fff; --muted:rgba(255,255,255,.66); --accent:#ff5fa8; --accent2:#5fe8ff;
-    --rolebg:rgba(255,255,255,.08); --rolebd:rgba(255,255,255,.18); --btn:rgba(255,255,255,.07); --btnbd:rgba(255,255,255,.16);
-    --radius:26px; --font:'Inter',sans-serif; --namefont:'Space Grotesk',sans-serif; --avshape:50%;
-    width:100%; max-width:340px; margin:0 auto; border-radius:var(--radius); overflow:hidden; position:relative;
-    background:linear-gradient(180deg,var(--bg2),var(--bg)); color:var(--text); font-family:var(--font); padding:0 0 24px;
-    box-shadow:0 30px 80px rgba(0,0,0,.55); border:1px solid rgba(255,255,255,.08);}
-  #card .cover{height:118px; position:relative; overflow:hidden;
-    background:linear-gradient(120deg,var(--accent),var(--accent2),var(--accent)); background-size:220% 220%; animation:cardGrad 7s ease infinite;}
-  #card .cover::after{content:""; position:absolute; inset:0;
-    background:radial-gradient(130px 80px at 78% 16%, rgba(255,255,255,.42), transparent 70%),
-               radial-gradient(100px 70px at 16% 86%, rgba(255,255,255,.22), transparent 70%);}
-  @keyframes cardGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-  @keyframes cardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-  #card .avatar{width:104px; height:104px; border-radius:var(--avshape); margin:-56px auto 0; position:relative; z-index:2;
-    background:#222 center/cover no-repeat; overflow:hidden;
-    box-shadow:0 0 0 4px var(--bg), 0 0 0 6px var(--accent), 0 10px 30px rgba(0,0,0,.45); animation:cardFloat 5s ease-in-out infinite;}
-  #card .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
-  #card .avatar .ph{display:flex; align-items:center; justify-content:center; height:100%; font-size:40px; opacity:.5;}
-  #card .name{font-family:var(--namefont); font-weight:700; font-size:24px; text-align:center; margin:18px 22px 8px; line-height:1.15; letter-spacing:.2px;}
-  #card .role{width:max-content; max-width:84%; margin:0 auto 14px; padding:5px 15px; border-radius:30px; font-size:11px; font-weight:700;
-    text-transform:uppercase; letter-spacing:1.4px; color:var(--accent); text-align:center;
-    background:var(--rolebg); border:1px solid var(--rolebd);}
-  #card .bio{text-align:center; font-size:13.5px; color:var(--muted); line-height:1.65; margin:0 26px 20px;}
-  #card .gallery{display:flex; gap:7px; justify-content:center; flex-wrap:wrap; margin:0 24px 18px;}
-  #card .gallery:empty{display:none; margin:0;}
-  #card .gallery img{width:62px; height:62px; object-fit:cover; border-radius:12px; border:1px solid var(--btnbd);}
-  #card .links{display:flex; flex-direction:column; gap:10px; margin:0 24px;}
-  #card .links a{position:relative; display:flex; align-items:center; justify-content:center; text-decoration:none; padding:13px 16px;
-    border-radius:14px; font-weight:600; font-size:14px; color:var(--text); background:var(--btn); border:1px solid var(--btnbd); transition:.25s;}
-  #card .links a::after{content:"\2197"; position:absolute; right:15px; opacity:.45; font-size:13px;}
-  #card .links a:hover{transform:translateY(-2px); border-color:var(--accent); box-shadow:0 8px 22px rgba(0,0,0,.35);}
+  /* ====== PROFILE (mẫu Linkbio) ====== */
+  .profile{--c:#fd8170; background:var(--c); min-height:200px; font-family:'Poppins';}
+  .profile .hero{width:100%; aspect-ratio:1/1; background:#e0a08f center/cover no-repeat; display:block;}
+  .profile .hero img{width:100%; height:100%; object-fit:cover; display:block;}
+  .profile .hero .ph{display:flex;align-items:center;justify-content:center;height:100%;font-size:60px;color:rgba(255,255,255,.7);}
+  .profile .nm{color:#fff; font-weight:700; font-size:30px; text-align:center; padding:20px 16px 6px; line-height:1.2; text-shadow:0 2px 10px rgba(0,0,0,.12);}
+  .profile .socials{display:flex; justify-content:center; gap:30px; padding:8px 0 20px;}
+  .profile .socials a{color:#fff; width:30px; height:30px; display:inline-flex;}
+  .profile .socials svg{width:100%; height:100%;}
+  .profile .gal{display:flex; flex-wrap:wrap; gap:6px; justify-content:center; padding:0 18px 14px;}
+  .profile .gal img{width:10%; min-width:30px; aspect-ratio:1/1; object-fit:cover; border-radius:8px; display:block; box-shadow:0 3px 8px rgba(0,0,0,.15);}
+  .profile .links{display:flex; flex-direction:column; gap:9px; padding:4px 18px 6px; align-items:center;}
+  .profile .links a{display:inline-flex; align-items:center; justify-content:center; gap:7px; text-decoration:none; background:#fff; color:var(--c); font-weight:600; font-size:13px; padding:8px 18px; border-radius:30px; box-shadow:0 4px 10px rgba(0,0,0,.1); border:1px solid rgba(255,255,255,.6); width:max-content; max-width:88%;}
+  .profile .links a .ic{width:15px;height:15px;flex:0 0 auto;display:inline-flex;}
+  .profile .links a .ic svg{width:100%;height:100%;}
+  .profile .divider{height:3px; background:rgba(255,255,255,.65); border-radius:3px; margin:18px 64px;}
+  .profile .qr{padding:2px 18px 26px;}
+  .profile .qr img{width:100%; border-radius:14px; display:block; background:#fff;}
+  .profile .qr:empty, .profile .gal:empty, .profile .socials:empty{display:none;}
 
-  /* ====== 10 MẪU ====== */
-  /* 1. NEON */
-  #card[data-tpl="neon"]{--bg:#0d0720; --bg2:#1b0e36; --accent:#ff4fa3; --accent2:#5fe8ff; --namefont:'Orbitron',sans-serif;
-    --btn:rgba(255,255,255,.05); --btnbd:rgba(255,79,163,.4); --rolebg:rgba(255,79,163,.12); --rolebd:rgba(255,79,163,.45);}
-  #card[data-tpl="neon"] .cover{background:linear-gradient(120deg,#ff4fa3,#a64bff,#5fe8ff);}
-  #card[data-tpl="neon"] .name{text-shadow:0 0 18px rgba(255,79,163,.65);}
-  #card[data-tpl="neon"] .links a:hover{box-shadow:0 0 22px rgba(255,79,163,.4);}
+  /* view mode (mở link) */
+  body.view-mode .wrap{max-width:460px; padding:0;}
+  body.view-mode header, body.view-mode .hero-h, body.view-mode #builderCol, body.view-mode .preview-lab{display:none !important;}
+  body.view-mode .layout{display:block; padding:0;}
+  body.view-mode .preview-wrap{position:static;}
+  body.view-mode .phone{max-width:460px; border-radius:0; min-height:100vh; border:none; box-shadow:none;}
+  .vm-foot{display:none; text-align:center; padding:18px;}
+  .vm-foot a{color:#fff; text-decoration:none; font-size:13px; font-weight:600; opacity:.85;}
+  body.view-mode .vm-foot{display:block; background:var(--vmc,#fd8170);}
 
-  /* 2. TỐI GIẢN */
-  #card[data-tpl="clean"]{--bg:#ffffff; --bg2:#ffffff; --text:#14171d; --muted:#5b6472; --accent:#4f7cff; --accent2:#9db8ff;
-    --rolebg:#eef3ff; --rolebd:#dde6fb; --btn:#f3f6fc; --btnbd:#e6ebf5; --namefont:'Poppins',sans-serif;
-    box-shadow:0 24px 60px rgba(40,60,110,.18);}
-  #card[data-tpl="clean"] .cover{height:84px;}
-
-  /* 3. HOÀNG HÔN */
-  #card[data-tpl="sunset"]{--bg:#2a0f2e; --bg2:#42163a; --text:#fff7f0; --muted:rgba(255,247,240,.78); --accent:#ff8a5b; --accent2:#ffd16b;
-    --rolebg:rgba(255,138,91,.16); --rolebd:rgba(255,138,91,.45); --btn:rgba(255,255,255,.08); --btnbd:rgba(255,209,107,.35); --namefont:'Poppins',sans-serif;}
-  #card[data-tpl="sunset"] .cover{background:linear-gradient(120deg,#ff9a56,#ff5f8f,#c9408a,#7a3aa0);}
-
-  /* 4. KÍNH MỜ */
-  #card[data-tpl="glass"]{--bg:#161d33; --bg2:#243056; --text:#eef4ff; --muted:rgba(238,244,255,.74); --accent:#7dd3fc; --accent2:#c4b5fd;
-    --rolebg:rgba(255,255,255,.12); --rolebd:rgba(255,255,255,.3); --btn:rgba(255,255,255,.13); --btnbd:rgba(255,255,255,.28);}
-  #card[data-tpl="glass"]{background:linear-gradient(150deg,#6d8bff,#9b6bff 55%,#22d3ee);}
-  #card[data-tpl="glass"] .cover{background:linear-gradient(120deg,#5eead4,#818cf8,#e879f9);}
-
-  /* 5. SANG TRỌNG */
-  #card[data-tpl="luxury"]{--bg:#0a0a0a; --bg2:#1a1510; --text:#f4e8c6; --muted:#b6a578; --accent:#e8c879; --accent2:#bb8e3c;
-    --rolebg:rgba(232,200,121,.1); --rolebd:rgba(232,200,121,.45); --btn:rgba(232,200,121,.06); --btnbd:rgba(232,200,121,.4);
-    --namefont:'Playfair Display',serif;}
-  #card[data-tpl="luxury"] .cover{height:88px; background:linear-gradient(120deg,#1a1308,#e8c879,#8a6a25,#1a1308);}
-  #card[data-tpl="luxury"] .name{letter-spacing:.5px;}
-
-  /* 6. PASTEL */
-  #card[data-tpl="pastel"]{--bg:#fff3f8; --bg2:#fbeefa; --text:#5b4a5e; --muted:#9a8896; --accent:#ff86b3; --accent2:#a9b8ff;
-    --rolebg:#fff; --rolebd:#ffd9e8; --btn:#ffffff; --btnbd:#ffdcec; --radius:32px; --namefont:'Poppins',sans-serif;
-    box-shadow:0 24px 60px rgba(255,134,179,.28);}
-  #card[data-tpl="pastel"] .cover{background:linear-gradient(120deg,#ffd6e8,#e0d6ff,#d6f0ff);}
-
-  /* 7. CYBER */
-  #card[data-tpl="cyber"]{--bg:#04070d; --bg2:#07131a; --text:#c6ffe4; --muted:#74b89a; --accent:#19ff7a; --accent2:#00e0ff;
-    --rolebg:rgba(25,255,122,.1); --rolebd:rgba(25,255,122,.4); --btn:rgba(25,255,122,.06); --btnbd:rgba(25,255,122,.35);
-    --namefont:'Space Grotesk',sans-serif; --avshape:18px;}
-  #card[data-tpl="cyber"] .cover{background:linear-gradient(120deg,#003b2a,#19ff7a,#00e0ff,#003b2a);}
-  #card[data-tpl="cyber"] .name{text-shadow:0 0 16px rgba(25,255,122,.6);}
-
-  /* 8. THIÊN NHIÊN */
-  #card[data-tpl="nature"]{--bg:#f4f0e6; --bg2:#efe9d6; --text:#3b3526; --muted:#7d745f; --accent:#7d9b53; --accent2:#cbb277;
-    --rolebg:#fff; --rolebd:#e2dac4; --btn:#ffffff; --btnbd:#e4ddc8; --namefont:'Marcellus',serif;
-    box-shadow:0 24px 60px rgba(80,75,50,.22);}
-  #card[data-tpl="nature"] .cover{background:linear-gradient(120deg,#9caf7a,#c2b483,#cbb277);}
-
-  /* 9. VAPORWAVE */
-  #card[data-tpl="vapor"]{--bg:#1e1140; --bg2:#2e1860; --text:#fde4ff; --muted:rgba(253,228,255,.78); --accent:#ff6ec7; --accent2:#7efff5;
-    --rolebg:rgba(255,110,199,.14); --rolebd:rgba(126,255,245,.4); --btn:rgba(255,255,255,.08); --btnbd:rgba(126,255,245,.35);
-    --namefont:'Pacifico',cursive;}
-  #card[data-tpl="vapor"] .cover{background:linear-gradient(120deg,#7efff5,#a06bff,#ff6ec7);}
-  #card[data-tpl="vapor"] .name{text-shadow:2px 2px 0 rgba(126,255,245,.5);}
-
-  /* 10. CHUYÊN NGHIỆP */
-  #card[data-tpl="corp"]{--bg:#0e1a2b; --bg2:#16263e; --text:#eaf1fb; --muted:#9bb0cc; --accent:#3b82f6; --accent2:#60a5fa;
-    --rolebg:rgba(59,130,246,.14); --rolebd:rgba(59,130,246,.4); --btn:rgba(59,130,246,.1); --btnbd:rgba(59,130,246,.3);
-    --namefont:'Poppins',sans-serif; --avshape:20px;}
-  #card[data-tpl="corp"] .cover{height:88px; background:linear-gradient(120deg,#1e3a5f,#3b82f6,#60a5fa);}
-
-  /* ====== HIỆU ỨNG NỀN ĐỘNG cho từng mẫu (CSS thuần) ====== */
-  #card .cover .fx{position:absolute; inset:0; overflow:hidden; pointer-events:none;}
-  #card .cover .fx::before,#card .cover .fx::after{content:""; position:absolute;}
-  @keyframes fxTwinkle{0%,100%{opacity:.45}50%{opacity:1}}
-  @keyframes fxMeteor{0%{transform:translate(0,0) rotate(28deg);opacity:0}10%{opacity:1}70%{opacity:1}100%{transform:translate(470px,250px) rotate(28deg);opacity:0}}
-  @keyframes fxDrift{from{transform:translateX(0)}to{transform:translateX(470px)}}
-  @keyframes fxFly{0%{transform:translate(0,0)}100%{transform:translate(430px,-8px)}}
-  @keyframes fxRise{0%{transform:translateY(0);opacity:0}20%{opacity:1}100%{transform:translateY(-140px);opacity:0}}
-  @keyframes fxFloatX{0%{transform:translate(0,0)}50%{transform:translate(220px,10px)}100%{transform:translate(430px,-6px)}}
-  @keyframes fxSweep{0%{transform:translateX(0) rotate(20deg);opacity:0}20%{opacity:1}80%{opacity:1}100%{transform:translateX(470px) rotate(20deg);opacity:0}}
-  @keyframes fxFall{from{background-position:0 0}to{background-position:0 28px}}
-  @keyframes fxScan{0%{transform:translateY(0);opacity:0}10%{opacity:1}100%{transform:translateY(150px);opacity:0}}
-  @keyframes fxLeaf{0%{transform:translate(0,0) rotate(0);opacity:0}15%{opacity:1}100%{transform:translate(-30px,150px) rotate(160deg);opacity:0}}
-  @keyframes fxGrid{from{background-position:center 0}to{background-position:center 26px}}
-
-  /* 1. NEON — mưa sao băng */
-  #card[data-tpl="neon"] .cover .fx{background-image:
-    radial-gradient(1.5px 1.5px at 20% 30%,#fff,transparent),radial-gradient(1.5px 1.5px at 60% 20%,#fff,transparent),
-    radial-gradient(1px 1px at 80% 50%,#fff,transparent),radial-gradient(1.5px 1.5px at 35% 70%,#fff,transparent),
-    radial-gradient(1px 1px at 90% 80%,#fff,transparent),radial-gradient(1px 1px at 12% 85%,#fff,transparent);
-    animation:fxTwinkle 3s ease-in-out infinite;}
-  #card[data-tpl="neon"] .cover .fx::before,#card[data-tpl="neon"] .cover .fx::after{
-    width:80px;height:2px;top:-12px;left:-90px;border-radius:2px;background:linear-gradient(90deg,transparent,#fff);
-    box-shadow:0 0 8px #fff;transform:rotate(28deg);animation:fxMeteor 2.6s linear infinite;}
-  #card[data-tpl="neon"] .cover .fx::after{top:20px;animation-delay:1.3s;animation-duration:3.3s;}
-
-  /* 2. TỐI GIẢN — bong bóng nhẹ bay lên */
-  #card[data-tpl="clean"] .cover .fx::before,#card[data-tpl="clean"] .cover .fx::after{
-    width:14px;height:14px;border-radius:50%;bottom:-20px;left:30%;background:rgba(79,124,255,.22);animation:fxRise 6s ease-in infinite;}
-  #card[data-tpl="clean"] .cover .fx::after{left:66%;width:9px;height:9px;animation-delay:2.6s;animation-duration:7.2s;}
-
-  /* 3. HOÀNG HÔN — mây trôi + máy bay */
-  #card[data-tpl="sunset"] .cover .fx::before{width:90px;height:28px;left:-110px;top:26px;border-radius:30px;
-    background:rgba(255,255,255,.55);filter:blur(6px);animation:fxDrift 10s linear infinite;}
-  #card[data-tpl="sunset"] .cover .fx::after{content:"\2708";font-size:18px;color:#fff;top:14px;left:-30px;
-    text-shadow:0 2px 6px rgba(0,0,0,.3);animation:fxFly 7s linear infinite;}
-
-  /* 4. KÍNH MỜ — bong bóng ánh sáng trôi */
-  #card[data-tpl="glass"] .cover .fx::before,#card[data-tpl="glass"] .cover .fx::after{
-    width:46px;height:46px;border-radius:50%;top:18px;left:-46px;
-    background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.55),rgba(255,255,255,0) 70%);
-    animation:fxFloatX 8s ease-in-out infinite;}
-  #card[data-tpl="glass"] .cover .fx::after{width:28px;height:28px;top:52px;animation-delay:2s;animation-duration:10s;}
-
-  /* 5. SANG TRỌNG — ánh sáng quét + bụi vàng lấp lánh */
-  #card[data-tpl="luxury"] .cover .fx{background-image:
-    radial-gradient(1.5px 1.5px at 25% 40%,#ffe9a8,transparent),radial-gradient(1px 1px at 70% 60%,#ffe9a8,transparent),
-    radial-gradient(1px 1px at 50% 22%,#ffe9a8,transparent);animation:fxTwinkle 3.5s ease-in-out infinite;}
-  #card[data-tpl="luxury"] .cover .fx::before{width:60px;height:220px;top:-50px;left:-90px;transform:rotate(20deg);
-    background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);animation:fxSweep 4.5s ease-in-out infinite;}
-
-  /* 6. PASTEL — tim bay lên */
-  #card[data-tpl="pastel"] .cover .fx::before,#card[data-tpl="pastel"] .cover .fx::after{
-    content:"\2665";font-size:14px;color:rgba(255,134,179,.85);bottom:-16px;left:28%;animation:fxRise 6.5s ease-in infinite;}
-  #card[data-tpl="pastel"] .cover .fx::after{left:64%;font-size:11px;color:rgba(169,184,255,.9);animation-delay:3s;animation-duration:7.5s;}
-
-  /* 7. CYBER — mã rơi kiểu Matrix + scanline */
-  #card[data-tpl="cyber"] .cover .fx{background-image:repeating-linear-gradient(0deg,rgba(25,255,122,.18) 0 2px,transparent 2px 7px);
-    background-size:100% 28px;animation:fxFall 1.1s linear infinite;opacity:.55;}
-  #card[data-tpl="cyber"] .cover .fx::before{left:0;right:0;height:18px;top:-18px;
-    background:linear-gradient(rgba(25,255,122,.4),transparent);animation:fxScan 3s linear infinite;}
-
-  /* 8. THIÊN NHIÊN — lá rơi */
-  #card[data-tpl="nature"] .cover .fx::before,#card[data-tpl="nature"] .cover .fx::after{
-    content:"\1F343";font-size:15px;top:-18px;left:26%;animation:fxLeaf 6s linear infinite;}
-  #card[data-tpl="nature"] .cover .fx::after{left:66%;font-size:12px;animation-delay:3s;animation-duration:7.5s;}
-
-  /* 9. VAPORWAVE — lưới retro chạy + mặt trời */
-  #card[data-tpl="vapor"] .cover .fx{background-image:
-    linear-gradient(rgba(126,255,245,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(126,255,245,.5) 1px,transparent 1px);
-    background-size:26px 26px;-webkit-mask:linear-gradient(transparent 38%,#000);mask:linear-gradient(transparent 38%,#000);
-    animation:fxGrid 2s linear infinite;opacity:.6;}
-  #card[data-tpl="vapor"] .cover .fx::before{width:54px;height:54px;border-radius:50%;left:50%;top:8px;margin-left:-27px;
-    background:linear-gradient(#fff36b,#ff6ec7);box-shadow:0 0 26px rgba(255,110,199,.6);}
-
-  /* 10. CHUYÊN NGHIỆP — ánh sáng quét chéo + hạt trôi */
-  #card[data-tpl="corp"] .cover .fx::before{width:70px;height:220px;top:-50px;left:-100px;transform:rotate(18deg);
-    background:linear-gradient(90deg,transparent,rgba(255,255,255,.32),transparent);animation:fxSweep 5s ease-in-out infinite;}
-  #card[data-tpl="corp"] .cover .fx::after{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.6);top:30px;left:-12px;
-    animation:fxDrift 7s linear infinite;}
-
-  /* Mẫu Tối giản: ảnh nền do khách tự tải lên */
-  #card[data-tpl="clean"].has-bg .cover{height:152px; background:var(--userbg) center/cover no-repeat;}
-  #card[data-tpl="clean"].has-bg .cover .fx{display:none;}
-  #card[data-tpl="clean"].has-bg .cover::after{background:linear-gradient(transparent 52%, #ffffff);}
-
-  /* ====== CHẾ ĐỘ XEM LINK PROFILE ====== */
-  body.view-mode{display:flex; align-items:flex-start; justify-content:center;}
-  body.view-mode .wrap > header, body.view-mode .hero, body.view-mode .preview-lab, body.view-mode #builderCol{display:none !important;}
-  body.view-mode .layout{display:block; padding:50px 0 30px;}
-  body.view-mode .preview-wrap{position:static; top:auto;}
-  .vm-foot{display:none; text-align:center; margin:26px 0 50px;}
-  .vm-foot a{color:#ff8ac4; text-decoration:none; border:1px solid #2a2440; padding:11px 22px; border-radius:30px; font-weight:600; font-size:14px;}
-  body.view-mode .vm-foot{display:block;}
-
-  /* ====== PAYMENT ====== */
-  .pay-row{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px;
-    background:#0e0b1c; border:1px solid #2c2350; border-radius:12px; padding:14px 16px;}
-  .pay-name{font-weight:700; font-size:15px;}
-  .pay-sub{font-size:12px; color:#9b94b3; margin-top:3px;}
-  .pay-price{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:22px; color:#ffd36b; white-space:nowrap;}
-  .paybtn{width:100%; padding:14px; border:none; border-radius:12px; cursor:pointer; font-family:'Inter';
-    font-weight:700; font-size:15px; color:#08120c; background:linear-gradient(120deg,#7cff8f,#5fe8ff);
-    box-shadow:0 8px 24px rgba(124,255,143,.3); transition:.2s;}
-  .paybtn:hover{transform:translateY(-2px);}
-
-  .pm{position:fixed; inset:0; z-index:80; background:rgba(8,5,16,.82); backdrop-filter:blur(8px);
-    display:none; align-items:center; justify-content:center; padding:18px;}
+  /* payment modal */
+  .pm{position:fixed; inset:0; z-index:90; display:none; align-items:center; justify-content:center; padding:18px; background:rgba(10,7,18,.7); backdrop-filter:blur(4px);}
   .pm.open{display:flex;}
-  .pm-box{width:100%; max-width:380px; background:#15102a; border:1px solid #2c2350; border-radius:20px;
-    padding:24px 22px; position:relative; max-height:92vh; overflow-y:auto; box-shadow:0 30px 80px rgba(0,0,0,.6);}
-  .pm-x{position:absolute; top:14px; right:14px; width:34px; height:34px; border-radius:50%; cursor:pointer;
-    border:1px solid #3a2d63; background:#241a44; color:#fff; font-size:16px;}
-  .pm-head{font-family:'Cinzel',serif; font-weight:800; font-size:20px; text-align:center;}
-  .pm-sub{text-align:center; color:#ffd36b; font-weight:600; margin:6px 0 16px;}
-  .pm-qr{background:#fff; border-radius:14px; padding:10px; width:230px; margin:0 auto 16px; min-height:230px; display:flex; align-items:center; justify-content:center;}
-  .pm-qr img{width:100%; display:block; border-radius:6px;}
-  .pm-info{background:#0e0b1c; border:1px solid #2c2350; border-radius:12px; padding:12px 14px; font-size:13.5px;}
-  .pm-line{display:flex; justify-content:space-between; gap:10px; padding:6px 0; border-bottom:1px solid #221a3e;}
-  .pm-line:last-child{border:none;}
-  .pm-line span{color:#9b94b3;} .pm-line b{text-align:right; word-break:break-all;}
-  .cp{cursor:pointer; margin-left:6px; font-size:11px; padding:3px 8px; border-radius:6px; border:1px solid #3a2d63;
-    background:#241a44; color:#9fe6ff; font-family:'Inter'; font-weight:600;}
-  .pm-note{font-size:12.5px; color:#9b94b3; line-height:1.5; margin:14px 0; text-align:center;}
-  .pm-done{width:100%; padding:14px; border:none; border-radius:12px; cursor:pointer; font-family:'Inter';
-    font-weight:700; font-size:15px; color:#08120c; background:linear-gradient(120deg,#7cff8f,#5fe8ff); transition:.2s;}
-  .pm-done:hover{transform:translateY(-2px);}
-  .pm-thanks{display:none; margin-top:14px; padding:14px; border-radius:12px; font-size:13.5px; line-height:1.6;
-    background:rgba(124,255,143,.1); border:1px solid rgba(124,255,143,.35); color:#bfffce;}
+  .pm-box{width:100%; max-width:360px; background:#1b1828; border:1px solid #2a2440; border-radius:20px; padding:22px; text-align:center; max-height:92vh; overflow:auto;}
+  .pm-x{float:right; background:none; border:1px solid #3a2d63; color:#fff; width:30px; height:30px; border-radius:50%; cursor:pointer;}
+  .pm-head{font-weight:700; font-size:17px; margin-bottom:4px;}
+  .pm-sub{color:#b7afd0; font-size:13px; margin-bottom:14px;}
+  .pm-qr{background:#fff; border-radius:14px; padding:10px; margin-bottom:14px;}
+  .pm-qr img{width:100%; display:block; border-radius:8px;}
+  .pm-info{text-align:left; font-size:13.5px; background:#100d1c; border:1px solid #2c2350; border-radius:12px; padding:12px; margin-bottom:14px;}
+  .pm-line{display:flex; justify-content:space-between; gap:10px; padding:4px 0;}
+  .pm-line span{color:#9b94b3;} .pm-line b{text-align:right;}
+  .cp{cursor:pointer; margin-left:6px; font-size:11px; padding:3px 8px; border-radius:6px; border:1px solid #3a2d63; background:#2a1f44; color:#9fe6ff; font-family:'Poppins'; font-weight:600;}
+  .pm-note{font-size:12.5px; color:#9b94b3; line-height:1.5; margin-bottom:12px;}
+  .pm-done{width:100%; padding:13px; border:none; border-radius:12px; cursor:pointer; font-family:'Poppins'; font-weight:700; font-size:14.5px; color:#08120c; background:linear-gradient(120deg,#7cff8f,#5fe8ff);}
+  .pm-thanks{display:none; margin-top:14px; padding:14px; border-radius:12px; font-size:13.5px; line-height:1.6; text-align:left; background:rgba(124,255,143,.08); border:1px solid rgba(124,255,143,.3); color:#bfffce;}
   .pm-thanks.show{display:block;}
+  .linkrow{display:flex; gap:8px; margin-top:8px;}
 </style></head>
 <body>
 <div class="wrap">
@@ -298,371 +103,327 @@
     <div class="logo">TẠP HÓA <span>PROFILE</span></div>
     <a class="back" href="index.html">← Trang chính</a>
   </header>
-
-  <div class="hero">
+  <div class="hero-h">
     <h1>Tạo <span>Profile</span> của bạn</h1>
-    <p>Chọn 1 trong 10 mẫu · thêm ảnh của bạn · điền thông tin · tải về dùng ngay.</p>
+    <p>Thêm ảnh · điền thông tin · lấy link chia sẻ. Một mẫu duy nhất, đẹp & gọn.</p>
   </div>
 
   <div class="layout">
-    <!-- CONTROLS -->
+    <!-- BUILDER -->
     <div id="builderCol">
       <div class="panel">
-        <h2><span class="n">1.</span> Chọn mẫu profile</h2>
-        <div class="tpls" id="tpls"></div>
+        <h2><span class="n">1.</span> Ảnh & tên</h2>
+        <label>Ảnh lớn (đại diện)</label>
+        <div class="uploader">
+          <div class="pv" id="heroPv"></div>
+          <label class="btn" for="heroFile">📷 Tải ảnh</label>
+          <input type="file" id="heroFile" accept="image/*">
+        </div>
+        <label>Tên hiển thị</label>
+        <input type="text" id="fName" value="Linh" placeholder="vd: Linh">
+        <label>Màu nền</label>
+        <div class="swatches" id="swatches"></div>
       </div>
 
-      <div class="panel" style="margin-top:18px;">
-        <h2><span class="n">2.</span> Thông tin của bạn</h2>
+      <div class="panel">
+        <h2><span class="n">2.</span> Mạng xã hội (dán link)</h2>
+        <label>Facebook</label>
+        <input type="url" id="sFb" placeholder="https://facebook.com/...">
+        <label>Instagram</label>
+        <input type="url" id="sIg" placeholder="https://instagram.com/...">
+        <label>TikTok</label>
+        <input type="url" id="sTt" placeholder="https://tiktok.com/@...">
+      </div>
 
-        <label>Ảnh đại diện</label>
-        <div class="uploader">
-          <div class="pv" id="avaPv"></div>
-          <label class="btn" for="avaFile">📷 Tải ảnh lên</label>
-          <input type="file" id="avaFile" accept="image/*">
-        </div>
-
-        <label id="bgLabel">Ảnh nền <span style="opacity:.7">(cho mẫu Tối giản)</span></label>
-        <div class="uploader">
-          <div class="pv" id="bgPv"></div>
-          <label class="btn" for="bgFile">🖼️ Tải ảnh nền</label>
-          <input type="file" id="bgFile" accept="image/*">
-          <button id="bgClear" style="display:none; cursor:pointer; padding:10px 14px; border-radius:10px; background:#3a1a2a; color:#ff9db5; border:1px solid #5a2a3e; font-size:13px; font-weight:600;">Xoá</button>
-        </div>
-
-        <label>Ảnh nổi bật <span style="opacity:.7">(tối đa 4 ảnh)</span></label>
-        <div class="uploader" style="flex-wrap:wrap; align-items:flex-start;">
+      <div class="panel">
+        <h2><span class="n">3.</span> Ảnh nổi bật (tối đa 4)</h2>
+        <div class="uploader" style="align-items:flex-start;">
           <label class="btn" for="galFile">🖼️ Thêm ảnh</label>
           <input type="file" id="galFile" accept="image/*" multiple>
           <div id="galPv" style="display:flex; gap:7px; flex-wrap:wrap;"></div>
         </div>
-
-        <label>Tên hiển thị</label>
-        <input type="text" id="fName" placeholder="vd: Phùng Gia Huy" value="Tên của bạn">
-
-        <label>Vai trò / nghề</label>
-        <input type="text" id="fRole" placeholder="vd: Content Creator · Editor" value="Content Creator">
-
-        <label>Giới thiệu ngắn</label>
-        <textarea id="fBio" placeholder="Vài dòng về bạn...">Chia sẻ về hành trình học edit và sáng tạo nội dung 🎬</textarea>
-
-        <label>Các liên kết (để trống nếu không dùng)</label>
-        <div class="row2">
-          <input type="text" id="fL1" placeholder="Nút 1 (vd: TikTok)" value="TikTok">
-          <input type="text" id="fL2" placeholder="Nút 2 (vd: Facebook)" value="Facebook">
-        </div>
-        <div class="row2" style="margin-top:10px;">
-          <input type="text" id="fL3" placeholder="Nút 3 (vd: Liên hệ)" value="Liên hệ Zalo">
-          <input type="text" id="fL4" placeholder="Nút 4 (vd: Cửa hàng)" value="">
-        </div>
-
-        <button class="dl" id="dlBtn">⬇ Tải Profile (ảnh PNG)</button>
       </div>
 
-      <div class="panel" style="margin-top:18px;">
-        <h2><span class="n">3.</span> Thanh toán</h2>
-        <div class="pay-row">
-          <div>
-            <div class="pay-name" id="payName">Mẫu Neon</div>
-            <div class="pay-sub">Thanh toán qua chuyển khoản · TPBank</div>
-          </div>
-          <div class="pay-price" id="payPrice">39.000₫</div>
+      <div class="panel">
+        <h2><span class="n">4.</span> Nút liên kết (tối đa 3)</h2>
+        <div class="row2"><input type="text" id="b1t" value="Instagram" placeholder="Tên nút"><input type="url" id="b1u" placeholder="Link"></div>
+        <div class="row2" style="margin-top:8px;"><input type="text" id="b2t" placeholder="Tên nút"><input type="url" id="b2u" placeholder="Link"></div>
+        <div class="row2" style="margin-top:8px;"><input type="text" id="b3t" placeholder="Tên nút"><input type="url" id="b3u" placeholder="Link"></div>
+      </div>
+
+      <div class="panel">
+        <h2><span class="n">5.</span> Mã QR nhận tiền (của bạn)</h2>
+        <label>Ngân hàng</label>
+        <select id="qBank"></select>
+        <div class="row2" style="margin-top:8px;">
+          <input type="text" id="qAcc" placeholder="Số tài khoản">
+          <input type="text" id="qName" placeholder="TÊN CHỦ TK (in hoa)">
         </div>
-        <button class="paybtn" id="payBtn">💳 Thanh toán ngay</button>
+        <p style="font-size:12px;color:#8a83a3;margin-top:8px;line-height:1.5;">Để trống nếu không muốn hiện mã QR nhận tiền.</p>
+      </div>
+
+      <div class="panel">
+        <h2><span class="n">6.</span> Hoàn tất</h2>
+        <div class="pricetag">Giá tạo profile: <b>39.000₫</b></div>
+        <button class="dl" id="payBtn">💳 Thanh toán & lấy link</button>
+        <button class="dl alt" id="dlBtn" style="margin-top:10px;">⬇ Tải ảnh profile (PNG)</button>
       </div>
     </div>
 
     <!-- PREVIEW -->
     <div class="preview-wrap">
       <div class="preview-lab">Xem trước</div>
-      <div id="card" data-tpl="neon">
-        <div class="cover"><span class="fx" aria-hidden="true"></span></div>
-        <div class="avatar"><div class="ph">👤</div></div>
-        <div class="name" id="cardName">Tên của bạn</div>
-        <div class="role" id="cardRole">Content Creator</div>
-        <div class="bio" id="cardBio"></div>
-        <div class="gallery" id="cardGallery"></div>
-        <div class="links" id="cardLinks"></div>
+      <div class="phone">
+        <div class="profile" id="profile">
+          <div class="hero" id="pHero"><div class="ph">👤</div></div>
+          <div class="nm" id="pName">Linh</div>
+          <div class="socials" id="pSocials"></div>
+          <div class="gal" id="pGal"></div>
+          <div class="links" id="pLinks"></div>
+          <div class="divider"></div>
+          <div class="qr" id="pQr"></div>
+        </div>
       </div>
-      <div class="vm-foot"><a href="#" id="vmNew">✦ Tự tạo Profile của bạn</a></div>
+      <div class="vm-foot"><a href="#" id="vmNew">✦ Tự tạo Profile của bạn — TẠP HÓA ONLINE</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="pm" id="payModal">
+  <div class="pm-box">
+    <button class="pm-x" id="payClose">✕</button>
+    <div class="pm-head">Quét mã để thanh toán</div>
+    <div class="pm-sub">Tạo Profile · 39.000₫</div>
+    <div class="pm-qr"><img id="pmQr" alt="QR thanh toán"></div>
+    <div class="pm-info">
+      <div class="pm-line"><span>Ngân hàng</span><b>TPBank</b></div>
+      <div class="pm-line"><span>Số tài khoản</span><b>42051799999 <button class="cp" data-copy="42051799999">Chép</button></b></div>
+      <div class="pm-line"><span>Chủ tài khoản</span><b>PHUNG GIA HUY</b></div>
+      <div class="pm-line"><span>Số tiền</span><b>39.000₫</b></div>
+      <div class="pm-line"><span>Nội dung</span><b><span id="pmInfo">MUA PROFILE</span> <button class="cp" id="pmInfoCopy">Chép</button></b></div>
+    </div>
+    <div class="pm-note" id="pmStatus">⏳ Đang chờ thanh toán... (tự động nhận trong ~30 giây sau khi bạn chuyển)</div>
+    <button class="pm-done" id="payDone" style="background:#241a44;color:#cfc7ec;">Tôi đã chuyển (bấm nếu chưa tự nhận)</button>
+    <div class="pm-thanks" id="payThanks">🎉 Đây là <b>link profile</b> của bạn — lưu lại hoặc chia sẻ:
+      <input id="linkInput" readonly style="width:100%; margin-top:10px; padding:10px; border-radius:8px; border:1px solid #2c2350; background:#100d1c; color:#9fe6ff; font-size:11.5px;">
+      <div class="linkrow">
+        <button id="linkCopy" class="pm-done" style="background:linear-gradient(120deg,#5fe8ff,#7c9bff);">📋 Chép link</button>
+        <button id="linkOpen" class="pm-done" style="background:linear-gradient(120deg,#7cff8f,#5fe8ff);">↗ Mở thử</button>
+      </div>
+      <div style="font-size:11.5px; color:#8a96c0; margin-top:10px; line-height:1.5;">Lưu ý: chủ shop vẫn cần kiểm tra app ngân hàng để đối soát tiền. Link đã chứa sẵn profile (không cần máy chủ).</div>
     </div>
   </div>
 </div>
 
 <script>
 (function(){
-  var TPLS = [
-    {id:"neon",   name:"Neon",     bg:"#120a22", ava:"#ff5fa8", l:"#5fe8ff", price:39000},
-    {id:"clean",  name:"Tối giản", bg:"#ffffff", ava:"#2d6cdf", l:"#cfe0ff", price:19000},
-    {id:"sunset", name:"Hoàng hôn",bg:"#2a1430", ava:"#ff6f91", l:"#ffb347", price:29000},
-    {id:"glass",  name:"Kính mờ",  bg:"#1b2433", ava:"#a78bfa", l:"#5eead4", price:35000},
-    {id:"luxury", name:"Sang trọng",bg:"#0c0c0c",ava:"#e9c46a", l:"#c9962f", price:49000},
-    {id:"pastel", name:"Pastel",   bg:"#fff0f5", ava:"#ff8fb1", l:"#b5a7ff", price:25000},
-    {id:"cyber",  name:"Cyber",    bg:"#05080f", ava:"#14ff72", l:"#00e5ff", price:39000},
-    {id:"nature", name:"Thiên nhiên",bg:"#f3efe4",ava:"#7c8a5a",l:"#b7a06a", price:29000},
-    {id:"vapor",  name:"Vaporwave",bg:"#241a44", ava:"#ff6ec7", l:"#7efff5", price:35000},
-    {id:"corp",   name:"Chuyên nghiệp",bg:"#0f1b2d",ava:"#3b82f6",l:"#60a5fa", price:45000}
+  var IC = {
+    fb:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h2.7l.4-3H13V9c0-.9.3-1.5 1.6-1.5H16V4.9c-.3 0-1.3-.1-2.4-.1C11.3 4.8 10 6.3 10 9v2H7.5v3H10v8z"/></svg>',
+    ig:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>',
+    tt:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.3 2 1.6 3.6 3.6 3.9v2.6c-1.3 0-2.6-.4-3.6-1.1v5.9c0 3-2.4 5.2-5.2 5.2S5.6 17.3 5.6 14.3c0-2.8 2.2-5 5-5 .3 0 .6 0 .9.1v2.7c-.3-.1-.6-.2-.9-.2-1.3 0-2.3 1-2.3 2.3s1 2.3 2.3 2.3 2.4-1 2.4-2.4V3z"/></svg>',
+    igColor:'<svg viewBox="0 0 24 24" fill="none" stroke="#fd5d8f" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fd5d8f" stroke="none"/></svg>'
+  };
+  var BANKS = [
+    ["","— Chọn ngân hàng —"],["970422","MB Bank"],["970407","Techcombank"],["970436","Vietcombank"],
+    ["970415","VietinBank"],["970418","BIDV"],["970405","Agribank"],["970416","ACB"],
+    ["970432","VPBank"],["970423","TPBank"],["970403","Sacombank"],["970441","VIB"],
+    ["970426","MSB"],["970448","OCB"],["970437","HDBank"],["970443","SHB"],["970431","Eximbank"]
   ];
+  var COLORS = ["#fd8170","#ff7eb6","#8b7cf6","#22c1a8","#5b9bff","#2b2b3a"];
 
-  // Thông tin nhận tiền (TPBank)
-  var BANK = { bin:"970423", acc:"42051799999", name:"PHUNG GIA HUY", label:"TPBank" };
-  var fmt = new Intl.NumberFormat('vi-VN');
-  var current = TPLS[0];
+  var heroData=null, galleryData=[], bgColor=COLORS[0];
+  var profile=document.getElementById('profile');
 
-  var card=document.getElementById('card');
-  var tplsBox=document.getElementById('tpls');
-
-  TPLS.forEach(function(t){
-    var d=document.createElement('div'); d.className='tpl'+(t.id==='neon'?' on':''); d.dataset.id=t.id;
-    d.innerHTML='<div class="mini" style="background:'+t.bg+'">'
-      +'<div class="ava" style="background:'+t.ava+'"></div>'
-      +'<div class="l1" style="background:'+t.ava+'"></div>'
-      +'<div class="l2" style="background:'+t.l+'"></div></div>'
-      +'<div class="tag">'+t.name+'<br><b style="color:#ffd36b">'+fmt.format(t.price)+'₫</b></div>';
-    d.onclick=function(){
-      tplsBox.querySelectorAll('.tpl').forEach(function(x){x.classList.remove('on');});
-      d.classList.add('on'); card.dataset.tpl=t.id; current=t; updatePayInfo();
-    };
-    tplsBox.appendChild(d);
+  // swatches
+  var sw=document.getElementById('swatches');
+  COLORS.forEach(function(c,i){
+    var b=document.createElement('div'); b.className='sw'+(i===0?' on':''); b.style.background=c;
+    b.onclick=function(){ sw.querySelectorAll('.sw').forEach(function(x){x.classList.remove('on');}); b.classList.add('on'); bgColor=c; render(); };
+    sw.appendChild(b);
   });
+  // banks
+  var qBank=document.getElementById('qBank');
+  BANKS.forEach(function(b){ var o=document.createElement('option'); o.value=b[0]; o.textContent=b[1]; qBank.appendChild(o); });
 
-  function updatePayInfo(){
-    document.getElementById('payName').textContent='Mẫu '+current.name;
-    document.getElementById('payPrice').textContent=fmt.format(current.price)+'₫';
-  }
-  updatePayInfo();
-
-  // photo upload
-  var avatarData=null, bgData=null, galleryData=[];
-  var avatarBox=card.querySelector('.avatar');
-  var avaPv=document.getElementById('avaPv');
-  document.getElementById('avaFile').addEventListener('change', function(e){
+  // hero upload
+  document.getElementById('heroFile').addEventListener('change', function(e){
     var f=e.target.files[0]; if(!f) return;
     var rd=new FileReader();
-    rd.onload=function(){
-      avatarData=rd.result;
-      avatarBox.innerHTML='<img src="'+rd.result+'" alt="avatar">';
-      avaPv.style.backgroundImage='url('+rd.result+')';
-    };
+    rd.onload=function(){ heroData=rd.result; document.getElementById('heroPv').style.backgroundImage='url("'+rd.result+'")'; render(); };
     rd.readAsDataURL(f);
   });
-
-  // background upload (mẫu Tối giản)
-  var bgPv=document.getElementById('bgPv'), bgClear=document.getElementById('bgClear');
-  document.getElementById('bgFile').addEventListener('change', function(e){
-    var f=e.target.files[0]; if(!f) return;
-    var rd=new FileReader();
-    rd.onload=function(){
-      bgData=rd.result;
-      card.style.setProperty('--userbg','url('+rd.result+')');
-      card.classList.add('has-bg');
-      bgPv.style.backgroundImage='url('+rd.result+')';
-      bgClear.style.display='inline-block';
-      if(current.id!=='clean'){
-        var cl=document.querySelector('.tpl[data-id="clean"]'); if(cl) cl.click();
-      }
-    };
-    rd.readAsDataURL(f);
-  });
-  bgClear.addEventListener('click', function(){
-    bgData=null;
-    card.classList.remove('has-bg'); card.style.removeProperty('--userbg');
-    bgPv.style.backgroundImage=''; bgClear.style.display='none';
-    document.getElementById('bgFile').value='';
-  });
-
-  // gallery (ảnh nổi bật, tối đa 4)
+  // gallery upload
   var galPv=document.getElementById('galPv');
   document.getElementById('galFile').addEventListener('change', function(e){
-    var files=Array.prototype.slice.call(e.target.files);
-    files.forEach(function(f){
+    Array.prototype.slice.call(e.target.files).forEach(function(f){
       if(galleryData.length>=4) return;
-      var rd=new FileReader();
-      rd.onload=function(){ galleryData.push(rd.result); renderGallery(); };
-      rd.readAsDataURL(f);
+      var rd=new FileReader(); rd.onload=function(){ if(galleryData.length<4){ galleryData.push(rd.result); render(); } }; rd.readAsDataURL(f);
     });
     this.value='';
   });
-  function renderGallery(){
-    // dải ảnh trong thẻ profile
-    var box=document.getElementById('cardGallery'); box.innerHTML='';
-    galleryData.forEach(function(src){ var im=document.createElement('img'); im.src=src; box.appendChild(im); });
-    // ô xem trước + nút xoá trong form
+
+  // inputs
+  ['fName','sFb','sIg','sTt','b1t','b1u','b2t','b2u','b3t','b3u','qAcc','qName'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', render);
+  });
+  qBank.addEventListener('change', render);
+
+  function val(id){ return document.getElementById(id).value.trim(); }
+
+  function render(){
+    profile.style.setProperty('--c', bgColor);
+    document.querySelectorAll('.vm-foot, .phone').forEach(function(){});
+    // hero
+    var h=document.getElementById('pHero');
+    h.innerHTML = heroData ? '<img src="'+heroData+'" alt="">' : '<div class="ph">👤</div>';
+    // name
+    document.getElementById('pName').textContent = val('fName') || 'Tên của bạn';
+    // socials
+    var sBox=document.getElementById('pSocials'); sBox.innerHTML='';
+    [['sFb',IC.fb],['sIg',IC.ig],['sTt',IC.tt]].forEach(function(p){
+      var u=val(p[0]); if(u){ var a=document.createElement('a'); a.href=u; a.target='_blank'; a.rel='noopener'; a.innerHTML=p[1]; sBox.appendChild(a); }
+    });
+    sBox.style.display = sBox.children.length ? 'flex' : 'none';
+    // gallery
+    var g=document.getElementById('pGal'); g.innerHTML='';
+    galleryData.forEach(function(src){ var im=document.createElement('img'); im.src=src; g.appendChild(im); });
+    g.style.display = galleryData.length ? 'grid' : 'none';
+    renderGalPv();
+    // links
+    var lBox=document.getElementById('pLinks'); lBox.innerHTML='';
+    [['b1t','b1u'],['b2t','b2u'],['b3t','b3u']].forEach(function(p){
+      var t=val(p[0]), u=val(p[1]); if(t){ var a=document.createElement('a'); a.href=u||'#'; if(u){a.target='_blank';a.rel='noopener';}
+        var isIg=/instagram/i.test(t); a.innerHTML=(isIg?'<span class="ic">'+IC.igColor+'</span>':'')+'<span>'+t+'</span>'; lBox.appendChild(a); }
+    });
+    // qr
+    renderQr();
+  }
+  function renderGalPv(){
     galPv.innerHTML='';
     galleryData.forEach(function(src,i){
       var w=document.createElement('div'); w.style.cssText='position:relative;';
-      w.innerHTML='<div style="width:46px;height:46px;border-radius:9px;background:#0e0b1c center/cover no-repeat;border:1px solid #2c2350;background-image:url('+src+')"></div>'
-        +'<button data-i="'+i+'" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;border:none;background:#ff5fa8;color:#fff;font-size:11px;line-height:1;cursor:pointer;">✕</button>';
-      w.querySelector('button').onclick=function(){ galleryData.splice(+this.dataset.i,1); renderGallery(); };
-      galPv.appendChild(w);
-    });
-    document.getElementById('galFile').parentNode.querySelector('label.btn').style.opacity = galleryData.length>=4 ? '.5' : '1';
-  }
-  document.getElementById('fName').oninput=function(){ document.getElementById('cardName').textContent=this.value||'Tên của bạn'; };
-  document.getElementById('fRole').oninput=function(){ document.getElementById('cardRole').textContent=this.value||''; };
-  document.getElementById('fBio').oninput=renderBio;
-  ['fL1','fL2','fL3','fL4'].forEach(function(id){ document.getElementById(id).oninput=renderLinks; });
-
-  function renderBio(){ document.getElementById('cardBio').textContent=document.getElementById('fBio').value||''; }
-  function renderLinks(){
-    var box=document.getElementById('cardLinks'); box.innerHTML='';
-    ['fL1','fL2','fL3','fL4'].forEach(function(id){
-      var v=document.getElementById(id).value.trim();
-      if(v){ var a=document.createElement('a'); a.textContent=v; a.href='#'; box.appendChild(a); }
+      var box=document.createElement('div'); box.style.cssText='width:44px;height:44px;border-radius:9px;border:1px solid #2c2350;background:#100d1c center/cover no-repeat;'; box.style.backgroundImage='url("'+src+'")';
+      var x=document.createElement('button'); x.textContent='✕'; x.style.cssText='position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;border:none;background:#fd8170;color:#fff;font-size:11px;line-height:1;cursor:pointer;';
+      x.onclick=function(){ galleryData.splice(i,1); render(); };
+      w.appendChild(box); w.appendChild(x); galPv.appendChild(w);
     });
   }
-  // init
-  document.getElementById('cardName').textContent=document.getElementById('fName').value;
-  document.getElementById('cardRole').textContent=document.getElementById('fRole').value;
-  renderBio(); renderLinks();
+  function qrUrl(bin, acc, nm){
+    return "https://img.vietqr.io/image/"+bin+"-"+acc+"-print.png?accountName="+encodeURIComponent(nm||'');
+  }
+  function renderQr(){
+    var box=document.getElementById('pQr'); var bin=val('qBank'), acc=val('qAcc'), nm=val('qName');
+    if(bin && acc){ box.innerHTML='<img src="'+qrUrl(bin,acc,nm)+'" alt="QR nhận tiền">'; box.style.display='block'; }
+    else { box.innerHTML=''; box.style.display='none'; }
+    document.querySelector('.profile .divider').style.display = (bin&&acc) ? 'block':'none';
+  }
 
-  // download as PNG
+  // ===== Tải PNG =====
   document.getElementById('dlBtn').addEventListener('click', function(){
-    var btn=this; var old=btn.textContent; btn.textContent='⏳ Đang tạo ảnh...';
-    html2canvas(card, {backgroundColor:null, scale:3, useCORS:true}).then(function(canvas){
-      var a=document.createElement('a');
-      a.href=canvas.toDataURL('image/png');
-      var nm=(document.getElementById('fName').value||'profile').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').toLowerCase();
-      a.download=nm+'-profile.png';
-      document.body.appendChild(a); a.click(); a.remove();
-      btn.textContent=old;
-    }).catch(function(){ btn.textContent=old; alert('Tạo ảnh lỗi, thử lại nhé!'); });
+    var btn=this, old=btn.textContent; btn.textContent='⏳ Đang tạo ảnh...';
+    html2canvas(profile, {backgroundColor:bgColor, scale:2, useCORS:true}).then(function(canvas){
+      var a=document.createElement('a'); a.href=canvas.toDataURL('image/png');
+      var nm=(val('fName')||'profile').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').toLowerCase();
+      a.download=nm+'-profile.png'; document.body.appendChild(a); a.click(); a.remove(); btn.textContent=old;
+    }).catch(function(){ btn.textContent=old; alert('Tạo ảnh lỗi (mã QR cần mạng). Thử lại nhé!'); });
   });
-  // ====== PAYMENT ======
-  var payModal=document.getElementById('payModal');
-  function openPay(){
-    var amount=current.price;
-    var info="PROFILE "+current.id.toUpperCase();
-    document.getElementById('pmItem').textContent='Mẫu '+current.name+' · '+fmt.format(amount)+'₫';
-    document.getElementById('pmAmt').textContent=fmt.format(amount)+'₫';
-    document.getElementById('pmInfo').innerHTML=info+' <button class="cp" id="cpInfo">Sao chép</button>';
-    // VietQR (miễn phí, không cần key) — đã điền sẵn số tiền + nội dung
-    var qr="https://img.vietqr.io/image/"+BANK.bin+"-"+BANK.acc+"-compact2.png"
-      +"?amount="+amount+"&addInfo="+encodeURIComponent(info)+"&accountName="+encodeURIComponent(BANK.name);
+
+  // ===== Thanh toán =====
+  var payModal=document.getElementById('payModal'), pollTimer=null, orderCode='';
+  var WORKER="https://taphoa-pay.phunggiahuy17092006.workers.dev"; // <-- địa chỉ Worker của bạn
+
+  function copy(t, b){ navigator.clipboard && navigator.clipboard.writeText(t).then(function(){ var o=b.textContent; b.textContent='✓'; setTimeout(function(){b.textContent=o;},1200); }); }
+
+  document.getElementById('payBtn').onclick=function(){
+    orderCode='TPHO'+Math.random().toString(16).slice(2,8).toUpperCase();
+    var qr="https://img.vietqr.io/image/970423-42051799999-compact2.png?amount=39000&addInfo="+encodeURIComponent(orderCode)+"&accountName="+encodeURIComponent("PHUNG GIA HUY");
     document.getElementById('pmQr').src=qr;
+    document.getElementById('pmInfo').textContent=orderCode;
+    document.getElementById('pmInfoCopy').onclick=function(){ copy(orderCode, this); };
     document.getElementById('payThanks').classList.remove('show');
+    var st=document.getElementById('pmStatus'); st.textContent='⏳ Đang chờ thanh toán... (tự động nhận trong ~30 giây sau khi bạn chuyển)'; st.style.color='';
     payModal.classList.add('open'); document.body.style.overflow='hidden';
-    document.getElementById('cpInfo').onclick=function(){ copy(info, this); };
+    startPoll();
+  };
+  function startPoll(){
+    stopPoll();
+    pollTimer=setInterval(function(){
+      fetch(WORKER+"/check?code="+orderCode).then(function(r){return r.json();}).then(function(d){
+        if(d && d.paid){ stopPoll(); onPaid(); }
+      }).catch(function(){});
+    }, 3000);
   }
-  function closePay(){ payModal.classList.remove('open'); document.body.style.overflow=''; }
-  function copy(text, btn){
-    navigator.clipboard && navigator.clipboard.writeText(text).then(function(){
-      var o=btn.textContent; btn.textContent='Đã chép ✓'; setTimeout(function(){ btn.textContent=o; },1500);
-    });
-  }
-  document.getElementById('payBtn').onclick=openPay;
-  document.getElementById('payClose').onclick=closePay;
-  payModal.addEventListener('click', function(e){ if(e.target===payModal) closePay(); });
-  document.querySelectorAll('.cp[data-copy]').forEach(function(b){ b.onclick=function(){ copy(b.dataset.copy, b); }; });
-
-  // ====== TẠO LINK PROFILE (nhúng dữ liệu vào URL, không cần máy chủ) ======
-  function shrink(dataUrl, max, cb){
-    if(!dataUrl){ cb(null); return; }
-    var img=new Image();
-    img.onload=function(){
-      var s=Math.min(1, max/Math.max(img.width,img.height));
-      var w=Math.max(1,Math.round(img.width*s)), h=Math.max(1,Math.round(img.height*s));
-      var c=document.createElement('canvas'); c.width=w; c.height=h;
-      c.getContext('2d').drawImage(img,0,0,w,h);
-      try{ cb(c.toDataURL('image/jpeg',0.72)); }catch(e){ cb(dataUrl); }
-    };
-    img.onerror=function(){ cb(null); };
-    img.src=dataUrl;
-  }
-  function collect(){
-    return {
-      t: current.id,
-      n: document.getElementById('fName').value,
-      r: document.getElementById('fRole').value,
-      b: document.getElementById('fBio').value,
-      l: ['fL1','fL2','fL3','fL4'].map(function(id){return document.getElementById(id).value.trim();}).filter(Boolean)
-    };
-  }
-  function shrinkAll(arr, max, cb){
-    if(!arr || !arr.length){ cb([]); return; }
-    var out=[], n=arr.length, done=0;
-    arr.forEach(function(d,i){ shrink(d, max, function(r){ out[i]=r; done++; if(done===n) cb(out.filter(Boolean)); }); });
-  }
-  function genLink(cb){
-    var d=collect();
-    shrink(avatarData, 300, function(av){
-      d.a=av;
-      var needBg = (current.id==='clean' && bgData);
-      shrink(needBg?bgData:null, 560, function(bg){
-        if(bg) d.g=bg;
-        shrinkAll(galleryData, 200, function(imgs){
-          if(imgs.length) d.i=imgs;
-          var json=JSON.stringify(d);
-          cb(location.origin+location.pathname+'#p='+encodeURIComponent(json));
-        });
-      });
-    });
-  }
-
-  document.getElementById('payDone').onclick=function(){
-    var t=document.getElementById('payThanks');
-    t.classList.add('show');
-    var inp=document.getElementById('linkInput');
-    inp.value='Đang tạo link...';
+  function stopPoll(){ if(pollTimer){ clearInterval(pollTimer); pollTimer=null; } }
+  function onPaid(){
+    var st=document.getElementById('pmStatus'); st.textContent='✓ Đã nhận được tiền! Đang tạo link...'; st.style.color='#7cff8f';
+    document.getElementById('payThanks').classList.add('show');
+    var inp=document.getElementById('linkInput'); inp.value='Đang tạo link...';
     genLink(function(url){
       inp.value=url;
       document.getElementById('linkCopy').onclick=function(){ copy(url, this); };
       document.getElementById('linkOpen').onclick=function(){ window.open(url,'_blank'); };
     });
-  };
+  }
+  function closePay(){ stopPoll(); payModal.classList.remove('open'); document.body.style.overflow=''; }
+  document.getElementById('payClose').onclick=closePay;
+  payModal.addEventListener('click', function(e){ if(e.target===payModal) closePay(); });
+  document.querySelectorAll('.cp[data-copy]').forEach(function(b){ b.onclick=function(){ copy(b.dataset.copy, b); }; });
+  document.getElementById('payDone').onclick=function(){ onPaid(); };
 
-  // ====== CHẾ ĐỘ XEM (mở link profile) ======
+  // ===== Link chia sẻ =====
+  function shrink(d, max, cb){
+    if(!d){ cb(null); return; }
+    var img=new Image();
+    img.onload=function(){ var s=Math.min(1,max/Math.max(img.width,img.height)); var w=Math.max(1,Math.round(img.width*s)),h=Math.max(1,Math.round(img.height*s));
+      var c=document.createElement('canvas'); c.width=w; c.height=h; c.getContext('2d').drawImage(img,0,0,w,h);
+      try{ cb(c.toDataURL('image/jpeg',0.72)); }catch(e){ cb(d); } };
+    img.onerror=function(){ cb(null); }; img.src=d;
+  }
+  function shrinkAll(arr, max, cb){ if(!arr.length){ cb([]); return; } var out=[],n=arr.length,done=0;
+    arr.forEach(function(d,i){ shrink(d,max,function(r){ out[i]=r; if(++done===n) cb(out.filter(Boolean)); }); }); }
+  function collect(){
+    return { c:bgColor, n:val('fName'),
+      s:{fb:val('sFb'),ig:val('sIg'),tt:val('sTt')},
+      l:[['b1t','b1u'],['b2t','b2u'],['b3t','b3u']].map(function(p){return {t:val(p[0]),u:val(p[1])};}).filter(function(x){return x.t;}),
+      q:{b:val('qBank'),a:val('qAcc'),m:val('qName')} };
+  }
+  function genLink(cb){
+    var d=collect();
+    shrink(heroData,420,function(hero){ if(hero) d.h=hero;
+      shrinkAll(galleryData,240,function(gs){ if(gs.length) d.g=gs;
+        cb(location.origin+location.pathname+'#p='+encodeURIComponent(JSON.stringify(d)));
+      });
+    });
+  }
+
+  // ===== Chế độ xem (mở link) =====
   function applyData(d){
-    card.dataset.tpl=d.t||'neon';
-    document.getElementById('cardName').textContent=d.n||'';
-    document.getElementById('cardRole').textContent=d.r||'';
-    document.getElementById('cardBio').textContent=d.b||'';
-    var box=document.getElementById('cardLinks'); box.innerHTML='';
-    (d.l||[]).forEach(function(v){ var a=document.createElement('a'); a.textContent=v; a.href='#'; box.appendChild(a); });
-    if(d.a){ avatarBox.innerHTML='<img src="'+d.a+'" alt="avatar">'; }
-    if(d.g && d.t==='clean'){ card.style.setProperty('--userbg','url('+d.g+')'); card.classList.add('has-bg'); }
-    var gbox=document.getElementById('cardGallery'); gbox.innerHTML='';
-    (d.i||[]).forEach(function(src){ var im=document.createElement('img'); im.src=src; gbox.appendChild(im); });
+    bgColor=d.c||COLORS[0]; profile.style.setProperty('--c',bgColor);
+    document.querySelector('.vm-foot').style.setProperty('--vmc', bgColor);
+    document.getElementById('pHero').innerHTML = d.h ? '<img src="'+d.h+'" alt="">' : '<div class="ph">👤</div>';
+    document.getElementById('pName').textContent = d.n || '';
+    var sBox=document.getElementById('pSocials'); sBox.innerHTML='';
+    [['fb',IC.fb],['ig',IC.ig],['tt',IC.tt]].forEach(function(p){ var u=d.s&&d.s[p[0]]; if(u){ var a=document.createElement('a'); a.href=u; a.target='_blank'; a.rel='noopener'; a.innerHTML=p[1]; sBox.appendChild(a); } });
+    sBox.style.display = sBox.children.length?'flex':'none';
+    var g=document.getElementById('pGal'); g.innerHTML=''; (d.g||[]).forEach(function(src){ var im=document.createElement('img'); im.src=src; g.appendChild(im); });
+    g.style.display=(d.g&&d.g.length)?'grid':'none';
+    var lBox=document.getElementById('pLinks'); lBox.innerHTML='';
+    (d.l||[]).forEach(function(it){ var a=document.createElement('a'); a.href=it.u||'#'; if(it.u){a.target='_blank';a.rel='noopener';} var isIg=/instagram/i.test(it.t); a.innerHTML=(isIg?'<span class="ic">'+IC.igColor+'</span>':'')+'<span>'+it.t+'</span>'; lBox.appendChild(a); });
+    var qBox=document.getElementById('pQr'); var q=d.q||{};
+    if(q.b && q.a){ qBox.innerHTML='<img src="'+qrUrl(q.b,q.a,q.m)+'" alt="QR">'; qBox.style.display='block'; document.querySelector('.profile .divider').style.display='block'; }
+    else { qBox.style.display='none'; document.querySelector('.profile .divider').style.display='none'; }
   }
   function checkView(){
     var h=location.hash||'';
     if(h.indexOf('#p=')===0){
-      try{
-        var d=JSON.parse(decodeURIComponent(h.slice(3)));
-        applyData(d);
-        document.body.classList.add('view-mode');
-      }catch(e){}
+      try{ applyData(JSON.parse(decodeURIComponent(h.slice(3)))); document.body.classList.add('view-mode'); return true; }catch(e){}
     }
+    return false;
   }
   document.getElementById('vmNew').onclick=function(e){ e.preventDefault(); location.href=location.pathname; };
-  checkView();
+
+  if(!checkView()){ render(); }
 })();
 </script>
-<!-- PAYMENT MODAL -->
-<div class="pm" id="payModal">
-  <div class="pm-box">
-    <button class="pm-x" id="payClose">✕</button>
-    <div class="pm-head">Quét mã để thanh toán</div>
-    <div class="pm-sub" id="pmItem">Mẫu Neon · 39.000₫</div>
-    <div class="pm-qr"><img id="pmQr" alt="Mã QR thanh toán"></div>
-    <div class="pm-info">
-      <div class="pm-line"><span>Ngân hàng</span><b>TPBank</b></div>
-      <div class="pm-line"><span>Số tài khoản</span><b id="pmAcc">42051799999 <button class="cp" data-copy="42051799999">Sao chép</button></b></div>
-      <div class="pm-line"><span>Chủ tài khoản</span><b>PHUNG GIA HUY</b></div>
-      <div class="pm-line"><span>Số tiền</span><b id="pmAmt">39.000₫</b></div>
-      <div class="pm-line"><span>Nội dung</span><b id="pmInfo">PROFILE NEON <button class="cp" id="cpInfo">Sao chép</button></b></div>
-    </div>
-    <div class="pm-note">Mở app ngân hàng, quét mã QR (đã điền sẵn số tiền + nội dung), rồi bấm nút dưới đây.</div>
-    <button class="pm-done" id="payDone">✓ Tôi đã chuyển khoản</button>
-    <div class="pm-thanks" id="payThanks">🎉 Cảm ơn bạn! Đơn đã được ghi nhận. Đây là <b>link profile</b> của bạn — lưu lại hoặc chia sẻ nhé:
-      <input id="linkInput" readonly style="width:100%; margin-top:10px; padding:10px; border-radius:8px; border:1px solid #2c2350; background:#0e0b1c; color:#9fe6ff; font-size:11.5px;">
-      <div style="display:flex; gap:8px; margin-top:8px;">
-        <button id="linkCopy" class="pm-done" style="background:linear-gradient(120deg,#5fe8ff,#7c9bff);">📋 Sao chép link</button>
-        <button id="linkOpen" class="pm-done" style="background:linear-gradient(120deg,#7cff8f,#5fe8ff);">↗ Mở thử</button>
-      </div>
-      <div style="font-size:11.5px; color:#8a96c0; margin-top:10px; line-height:1.5;">Lưu ý: chủ shop vẫn cần kiểm tra app ngân hàng để đối soát tiền. Link đã chứa sẵn profile của bạn (không cần lưu máy chủ).</div>
-    </div>
-  </div>
-</div>
-
 </body></html>
