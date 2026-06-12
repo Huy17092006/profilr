@@ -21,7 +21,12 @@
   .hero-h p{color:#aaa3bd; font-size:14.5px; margin-top:8px;}
 
   .layout{display:grid; grid-template-columns:1fr 392px; gap:26px; padding:14px 0 70px; align-items:start;}
-  @media(max-width:860px){ .layout{grid-template-columns:1fr;} .preview-wrap{order:-1;} }
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;}
+    .preview-wrap{order:-1; position:sticky; top:0; z-index:50; background:#0f0b18; padding:8px 0 12px; border-bottom:1px solid #261d44;}
+    .preview-lab{display:none;}
+    .preview-wrap .profile{max-width:240px; margin:0 auto; box-shadow:0 10px 30px rgba(0,0,0,.45);}
+  }
 
   .panel{background:#1b1828; border:1px solid #2a2440; border-radius:16px; padding:20px; margin-bottom:16px;}
   .panel h2{font-size:14px; font-weight:700; margin-bottom:14px;}
@@ -57,8 +62,8 @@
   .profile .socials{display:flex; justify-content:center; gap:30px; padding:8px 0 20px;}
   .profile .socials a{color:#fff; width:30px; height:30px; display:inline-flex;}
   .profile .socials svg{width:100%; height:100%;}
-  .profile .gal{display:flex; flex-wrap:wrap; gap:6px; justify-content:center; padding:0 18px 14px;}
-  .profile .gal img{width:10%; min-width:30px; aspect-ratio:1/1; object-fit:cover; border-radius:8px; display:block; box-shadow:0 3px 8px rgba(0,0,0,.15);}
+  .profile .gal{display:flex; flex-wrap:nowrap; gap:8px; justify-content:center; padding:0 18px 14px; overflow-x:auto;}
+  .profile .gal img{width:100px; height:100px; flex:0 0 auto; object-fit:cover; border-radius:12px; display:block; box-shadow:0 3px 8px rgba(0,0,0,.15);}
   .profile .links{display:flex; flex-direction:column; gap:9px; padding:4px 18px 6px; align-items:center;}
   .profile .links a{display:inline-flex; align-items:center; justify-content:center; gap:7px; text-decoration:none; background:#fff; color:var(--c); font-weight:600; font-size:13px; padding:8px 18px; border-radius:30px; box-shadow:0 4px 10px rgba(0,0,0,.1); border:1px solid rgba(255,255,255,.6); width:max-content; max-width:88%;}
   .profile .links a .ic{width:15px;height:15px;flex:0 0 auto;display:inline-flex;}
@@ -164,7 +169,7 @@
 
       <div class="panel">
         <h2><span class="n">6.</span> Hoàn tất</h2>
-        <div class="pricetag">Giá tạo profile: <b>30.000₫</b></div>
+        <div class="pricetag">Giá tạo profile: <b>39.000₫</b></div>
         <button class="dl" id="payBtn">💳 Thanh toán & lấy link</button>
         <button class="dl alt" id="dlBtn" style="margin-top:10px;">⬇ Tải ảnh profile (PNG)</button>
       </div>
@@ -197,7 +202,7 @@
     <div class="pm-sub">Tạo Profile · 39.000₫</div>
     <div class="pm-qr"><img id="pmQr" alt="QR thanh toán"></div>
     <div class="pm-info">
-      <div class="pm-line"><span>Ngân hàng</span><b>MBBank</b></div>
+      <div class="pm-line"><span>Ngân hàng</span><b>MB Bank</b></div>
       <div class="pm-line"><span>Số tài khoản</span><b>42051799999 <button class="cp" data-copy="42051799999">Chép</button></b></div>
       <div class="pm-line"><span>Chủ tài khoản</span><b>PHUNG GIA HUY</b></div>
       <div class="pm-line"><span>Số tiền</span><b>39.000₫</b></div>
@@ -337,7 +342,7 @@
 
   document.getElementById('payBtn').onclick=function(){
     orderCode='TPHO'+Math.random().toString(16).slice(2,8).toUpperCase();
-    var qr="https://img.vietqr.io/image/970423-42051799999-compact2.png?amount=39000&addInfo="+encodeURIComponent(orderCode)+"&accountName="+encodeURIComponent("PHUNG GIA HUY");
+    var qr="https://img.vietqr.io/image/970422-42051799999-compact2.png?amount=39000&addInfo="+encodeURIComponent(orderCode)+"&accountName="+encodeURIComponent("PHUNG GIA HUY");
     document.getElementById('pmQr').src=qr;
     document.getElementById('pmInfo').textContent=orderCode;
     document.getElementById('pmInfoCopy').onclick=function(){ copy(orderCode, this); };
@@ -427,3 +432,4 @@
 })();
 </script>
 </body></html>
+
