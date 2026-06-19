@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "taphoa-pay",
+  "compatibility_date": "2026-06-19",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "index.html"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
